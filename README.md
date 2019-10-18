@@ -1,7 +1,7 @@
 # my-vue
 
 > This is My project
-> 文件mongodbDatabase.zip是对应的数据库，具体导入参考https://blog.csdn.net/weixin_42512937/article/details/102498644
+文件mongodbDatabase.zip是对应的数据库，具体导入参考https://blog.csdn.net/weixin_42512937/article/details/102498644
 
 ## Build Setup
 
