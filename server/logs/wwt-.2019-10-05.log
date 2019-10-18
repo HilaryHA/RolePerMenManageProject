@@ -1,0 +1,15 @@
+[2019-10-05T00:05:32.334] [INFO] 【logInfo】 - OPTIONS /menu/user "HTTP/1.1" 204 "http://192.168.7.12:8099/per/userManage" undefined
+[2019-10-05T00:05:32.388] [INFO] 【logInfo】 - GET /menu/user "HTTP/1.1" 200 "http://192.168.7.12:8099/per/userManage" "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVpZCI6MX0sImV4cCI6MTU3MDIwNDMxMCwiaWF0IjoxNTcwMTkzNTEwfQ.3PExgBZd4PUpAWgXwZfdgBgpnmNWQcgmAPgU8gAJHgM"
+[2019-10-05T00:05:36.146] [INFO] 【logInfo】 - OPTIONS /user/login "HTTP/1.1" 204 "http://192.168.7.12:8099/" undefined
+[2019-10-05T00:05:37.338] [INFO] 【logInfo】 - POST /user/login "HTTP/1.1" 200 "http://192.168.7.12:8099/" null
+[2019-10-05T00:05:37.643] [INFO] 【logInfo】 - GET /menu/user "HTTP/1.1" 200 "http://192.168.7.12:8099/my/index" "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVpZCI6MX0sImV4cCI6MTU3MDIxNTkzNywiaWF0IjoxNTcwMjA1MTM3fQ.kgZuCfD6fq4dBJog9YpLATIl5BFLv60Wj2K1Cx2QAJ4"
+[2019-10-05T00:05:42.989] [INFO] 【logInfo】 - OPTIONS /menu?page=0&size=10&sort=id,1 "HTTP/1.1" 204 "http://192.168.7.12:8099/per/menu" undefined
+[2019-10-05T00:05:43.037] [INFO] 【logInfo】 - GET /menu?page=0&size=10&sort=id,1 "HTTP/1.1" 200 "http://192.168.7.12:8099/per/menu" "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVpZCI6MX0sImV4cCI6MTU3MDIxNTkzNywiaWF0IjoxNTcwMjA1MTM3fQ.kgZuCfD6fq4dBJog9YpLATIl5BFLv60Wj2K1Cx2QAJ4"
+[2019-10-05T00:06:52.251] [INFO] 【logInfo】 - OPTIONS /user?page=0&size=10&sort=id,1 "HTTP/1.1" 204 "http://192.168.7.12:8099/per/userManage" undefined
+[2019-10-05T00:06:53.061] [INFO] 【logInfo】 - GET /user?page=0&size=10&sort=id,1 "HTTP/1.1" 200 "http://192.168.7.12:8099/per/userManage" "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVpZCI6MX0sImV4cCI6MTU3MDIxNTkzNywiaWF0IjoxNTcwMjA1MTM3fQ.kgZuCfD6fq4dBJog9YpLATIl5BFLv60Wj2K1Cx2QAJ4"
+[2019-10-05T00:07:55.079] [INFO] 【logInfo】 - OPTIONS /menu/user HTTP/1.1 204 http://192.168.7.12:8099/per/userManage undefined
+[2019-10-05T00:07:55.985] [INFO] 【logInfo】 - GET /menu/user HTTP/1.1 200 http://192.168.7.12:8099/per/userManage "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVpZCI6MX0sImV4cCI6MTU3MDIxNTkzNywiaWF0IjoxNTcwMjA1MTM3fQ.kgZuCfD6fq4dBJog9YpLATIl5BFLv60Wj2K1Cx2QAJ4"
+[2019-10-05T00:07:56.516] [INFO] 【logInfo】 - OPTIONS /user?page=0&size=10&sort=id,1 HTTP/1.1 204 http://192.168.7.12:8099/per/userManage undefined
+[2019-10-05T00:07:56.592] [INFO] 【logInfo】 - GET /user?page=0&size=10&sort=id,1 HTTP/1.1 200 http://192.168.7.12:8099/per/userManage "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVpZCI6MX0sImV4cCI6MTU3MDIxNTkzNywiaWF0IjoxNTcwMjA1MTM3fQ.kgZuCfD6fq4dBJog9YpLATIl5BFLv60Wj2K1Cx2QAJ4"
+[2019-10-05T00:08:03.331] [INFO] 【logInfo】 - OPTIONS /permission?page=0&size=10&sort=id,1 HTTP/1.1 204 http://192.168.7.12:8099/per/purview undefined
+[2019-10-05T00:08:03.412] [INFO] 【logInfo】 - GET /permission?page=0&size=10&sort=id,1 HTTP/1.1 200 http://192.168.7.12:8099/per/purview "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVpZCI6MX0sImV4cCI6MTU3MDIxNTkzNywiaWF0IjoxNTcwMjA1MTM3fQ.kgZuCfD6fq4dBJog9YpLATIl5BFLv60Wj2K1Cx2QAJ4"

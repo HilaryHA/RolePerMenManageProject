@@ -1,0 +1,12 @@
+[2019-10-04T21:48:00.963] [INFO] 【logInfo】 - OPTIONS /menu/user "HTTP/1.1" 204 "http://192.168.7.12:8099/per/userManage"
+[2019-10-04T21:48:01.611] [INFO] 【logInfo】 - GET /menu/user "HTTP/1.1" 200 "http://192.168.7.12:8099/per/userManage"
+[2019-10-04T21:48:02.465] [INFO] 【logInfo】 - OPTIONS /user?page=0&size=10&sort=id,1 "HTTP/1.1" 204 "http://192.168.7.12:8099/per/userManage"
+[2019-10-04T21:48:02.578] [INFO] 【logInfo】 - GET /user?page=0&size=10&sort=id,1 "HTTP/1.1" 200 "http://192.168.7.12:8099/per/userManage"
+[2019-10-04T23:43:59.049] [INFO] 【logInfo】 - OPTIONS /menu/user "HTTP/1.1" 204 "http://192.168.7.12:8099/per/userManage" :authorization
+[2019-10-04T23:43:59.899] [INFO] 【logInfo】 - GET /menu/user "HTTP/1.1" 200 "http://192.168.7.12:8099/per/userManage" :authorization
+[2019-10-04T23:44:00.571] [INFO] 【logInfo】 - OPTIONS /user?page=0&size=10&sort=id,1 "HTTP/1.1" 204 "http://192.168.7.12:8099/per/userManage" :authorization
+[2019-10-04T23:44:00.673] [INFO] 【logInfo】 - GET /user?page=0&size=10&sort=id,1 "HTTP/1.1" 200 "http://192.168.7.12:8099/per/userManage" :authorization
+[2019-10-04T23:45:07.346] [INFO] 【logInfo】 - OPTIONS /menu/user "HTTP/1.1" 204 "http://192.168.7.12:8099/per/userManage" undefined
+[2019-10-04T23:45:08.083] [INFO] 【logInfo】 - GET /menu/user "HTTP/1.1" 200 "http://192.168.7.12:8099/per/userManage" "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVpZCI6MX0sImV4cCI6MTU3MDIwNDMxMCwiaWF0IjoxNTcwMTkzNTEwfQ.3PExgBZd4PUpAWgXwZfdgBgpnmNWQcgmAPgU8gAJHgM"
+[2019-10-04T23:45:08.995] [INFO] 【logInfo】 - OPTIONS /user?page=0&size=10&sort=id,1 "HTTP/1.1" 204 "http://192.168.7.12:8099/per/userManage" undefined
+[2019-10-04T23:45:09.134] [INFO] 【logInfo】 - GET /user?page=0&size=10&sort=id,1 "HTTP/1.1" 200 "http://192.168.7.12:8099/per/userManage" "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVpZCI6MX0sImV4cCI6MTU3MDIwNDMxMCwiaWF0IjoxNTcwMTkzNTEwfQ.3PExgBZd4PUpAWgXwZfdgBgpnmNWQcgmAPgU8gAJHgM"

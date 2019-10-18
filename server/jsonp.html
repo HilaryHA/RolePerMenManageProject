@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSONP</title>
+  <script type="text/javascript">
+    let localHandler = function(data) {
+      console.log('===============data===========', data);
+      alert(`本地函数name:${data.name} ,age:${data.age}, height: ${data.height}`);
+    }
+    let url = 'http://flightQuery.com/jsonp/flightResult.aspx?code=CA1998&callback=flightHandler'
+    let script = docuemnt.createElement('script')
+    script.setAttribute('src', url);
+    document.getElementsByTagName('head')[0].appendChild(script);
+
+    jquery(document).ready(function () {
+      $.ajax({
+        type: 'get',
+        async : false,
+        url: '',
+        dataType: 'jsonp',
+        jsonp:'callback',
+        jsonpCallback: '..',
+        success: function () {
+
+        },
+        error: function () {
+
+        }
+      })
+    })
+  </script>
+  <script type="text/javascript" src="./test.js"></script>
+</head>
+<body>
+
+</body>
+</html>

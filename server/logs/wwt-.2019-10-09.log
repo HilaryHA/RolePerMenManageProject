@@ -1,0 +1,3 @@
+[2019-10-09T11:05:29.166] [INFO] 【logInfo】 - OPTIONS /menu/user HTTP/1.1 204 http://192.168.7.12:8099/in/logInfo undefined "1570590329166"
+[2019-10-09T11:05:29.876] [INFO] 【logInfo】 - GET /menu/user HTTP/1.1 200 http://192.168.7.12:8099/in/logInfo "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVpZCI6MX0sImV4cCI6MTU3MDU5OTMwOSwiaWF0IjoxNTcwNTg4NTA5fQ.-JCxoPv5eY0bPhGiXCINqlm6WjfLciKMtB0fg7hMVYY" "1570590329876"
+[2019-10-09T11:05:30.938] [INFO] 【logInfo】 - OPTIONS /logs?page=0&size=10&sort=id,1 HTTP/1.1 204 http://192.168.7.12:8099/in/logInfo undefined "1570590330938"
