@@ -1,10 +1,11 @@
 # my-vue
-> This is My project  
-文件mongodbDatabase.zip是对应的数据库，具体导入参考https://blog.csdn.net/weixin_42512937/article/details/102498644
+> This is a Vue based back-end management system.  
+文件说明：  
+【mongodbDatabase.zip】是对应的数据库，具体导入参考[MongoDB之数据的备份、还原、导出、导入等简单操作](https://blog.csdn.net/weixin_42512937/article/details/102498644)
 
   
 
-## 项目环境：Vue + Node + Mongodb，前端页面运用ElementUI组件和Vue进行展示，数据库选择的是非关系型数据库Mongodb，后端通过Node处理数据库与前端的交互
+### 项目环境：Vue + Node + Mongodb，前端页面运用ElementUI组件和Vue进行展示，数据库选择的是非关系型数据库Mongodb，后端通过Node处理数据库与前端的交互
 ```
 # 哈哈
 # 恩恩额
