@@ -1,7 +1,15 @@
 # my-vue
-
 > This is My project  
 文件mongodbDatabase.zip是对应的数据库，具体导入参考https://blog.csdn.net/weixin_42512937/article/details/102498644
+
+  
+
+## 项目环境：Vue + Node + Mongodb，前端页面运用ElementUI组件和Vue进行展示，数据库选择的是非关系型数据库Mongodb，后端通过Node处理数据库与前端的交互
+```
+# 哈哈
+# 恩恩额
+```
+
 
 ## Build Setup
 
