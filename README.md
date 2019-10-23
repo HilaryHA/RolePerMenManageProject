@@ -5,7 +5,7 @@
 	
 |Author|窩窩头:panda_face:|
 |---|---
-|E-mail|719955128@qq.com
+|E-mail|hilaryha@qq.com
 
 
 ****
@@ -20,9 +20,13 @@
 ------
 1. 【mongodbDatabase.zip】对应的数据库，具体导入、导出操作参考 [MongoDB之数据的备份、还原、导出、导入等简单操作](https://blog.csdn.net/weixin_42512937/article/details/102498644 "Mongodb数据库操作")
 2. 【server】对应后端node（具体操作，在server文件下的readme.md文件中）
-3. 【其他文件】对应Vue项目，运行以下命令，即可运行（注意：在此之前需要先开启mongodb服务，然后运行node服务，最后执行以下命令即可）
+3. 【其他文件】对应Vue项目，运行以下命令，即可运行
 > npm install   #安装所有需要的插件包  
 npm run dev     #运行项目
+4. 【注意运行顺序】 
+   1. 先开启mongodb服务  `net start mongodb` (以管理身份打开cmd窗口)
+   2. 然后运行node服务   `node app.js` (在server目录下的命令窗口执行)
+   3. 最后执行Vue项目 `npm install` 、 `npm run dev` （在当前目录下执行）
   
   
 *****
