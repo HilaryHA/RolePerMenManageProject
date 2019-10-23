@@ -18,7 +18,7 @@
 *****
 ### 文件说明
 ------
-1. 【mongodbDatabase.zip】对应的数据库，具体导入、导出操作参考[MongoDB之数据的备份、还原、导出、导入等简单操作](https://blog.csdn.net/weixin_42512937/article/details/102498644 "Mongodb数据库操作")
+1. 【mongodbDatabase.zip】对应的数据库，具体导入、导出操作参考 [MongoDB之数据的备份、还原、导出、导入等简单操作](https://blog.csdn.net/weixin_42512937/article/details/102498644 "Mongodb数据库操作")
 2. 【server】对应后端node（具体操作，在server文件下的readme.md文件中）
 3. 【其他文件】对应Vue项目，运行以下命令，即可运行（注意：在此之前需要先开启mongodb服务，然后运行node服务，最后执行以下命令即可）
 > npm install   #安装所有需要的插件包  
@@ -55,16 +55,16 @@ npm run dev     #运行项目
          * Node中引入中间件：fs（用于读取公钥、私钥文件），jsonwebtoken（跨域认证，利用sign函数生成token，然后verify函数验证token）
       2. 注册时加密密码原理：
          * Node中引入中间件：fs（用于读取公钥、私钥文件），crypto（提供通用的加密和哈希算法）  
-         * 通过私钥加密、公钥解密的方式，参考[Node.js+crypto模块之用户密码加密解密](https://blog.csdn.net/weixin_42512937/article/details/100739890)
+         * 通过私钥加密、公钥解密的方式，参考 [Node.js+crypto模块之用户密码加密解密](https://blog.csdn.net/weixin_42512937/article/details/100739890)
 
 2. **菜单**
    1. 前端：  
-      * 首先是每个用户，会分配对应的角色，其中每个角色分配了，对应的菜单和增删改查的权限，所以给用户分配角色即可，角色可分配多个，其中逻辑参考[后台管理项目之角色、权限、菜单、用户之间的关系（Vue+node.js+Mongodb）](https://blog.csdn.net/weixin_42512937/article/details/101106950 "菜单、权限、角色与用户之间的关系")
+      * 首先是每个用户，会分配对应的角色，其中每个角色分配了，对应的菜单和增删改查的权限，所以给用户分配角色即可，角色可分配多个
    2. 后端：
       1. 用户登录时查找到对应用户userId / 登录之后通过获取用户token值（`/user/login`登录接口、`/menu/user`菜单接口）
          * 两个接口原理类似，根据用户userId去users_roles用户角色表，找到所有对应的角色roleId
          * 然后通过roleId去role_menu角色菜单表中找到对应的菜单数组（其中需要去重处理，因为多个角色中，对应的某些菜单选项可能相同）
-      
+   3. 逻辑参考 [后台管理项目之角色、权限、菜单、用户之间的关系（Vue+node.js+Mongodb）](https://blog.csdn.net/weixin_42512937/article/details/101106950 "菜单、权限、角色与用户之间的关系")
 
 3. **权限（增删改查）**
    1. 前端：  
@@ -77,9 +77,13 @@ npm run dev     #运行项目
 
 4. **支付功能**
    1. 前端：  
-      * 支付
+      * 订单支付页面中，创建订单之后，打开后端返回的支付url，用自己的沙箱账号支付即可
    2. 后端：
-      1. bala
+      1. 创建订单（`/alipay`接口）
+         * 根据前端订单数据，产生唯一订单号，结合支付宝提供的中间件“alipay-sdk”，注意使用自己的沙箱测试接口，沙箱appId等，最后调用exec函数，传递'alipay.trade.page.pay'支付接口，即可返回支付链接的 url地址
+      2. 查询订单状态（`/alipay/:tradeNo`接口）
+         * 根据订单号，调用exec函数，传递'alipay.trade.query'查询接口，此接口返回的https的url，需要结合request中间件，发送https请求，即可返回对应的状态值
+   3. 实现步骤参考 [Vue node.js实现支付宝支付(沙箱测试)](https://blog.csdn.net/weixin_42512937/article/details/101108086 "支付宝沙箱支付")
 
 5. **日志生成**
 登录
