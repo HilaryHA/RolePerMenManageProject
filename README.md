@@ -93,12 +93,22 @@ npm run dev     #运行项目
          * fs（操作文件）
          * readline（按行读取）
          * domain（处理异常）
-      2. ====================哈哈哈哈哈哈哈哈哈哈或或或或或或
+      2. 封装日志生成文件log4.js，其中包含输出的日志文件格式、输入每条日志的格式（包含token值），然后导出在app.js文件中使用
+      3. 日志列表根据日期获取对应的日志，此时是通过在读取之前，将数据库日志表清空，然后读取对应的日志文件，将日志文件按行读取，并且将每一行的格式（处理token、手动生成id值；因为mongodb数据库默认是_id），然后转换为与数据库字段格式对应的值，其中会存在读取到不存在的日期日志，就需要domain处理异常
       
    3. 参考 [Nodejs+Log4js日志的使用（环境：Vue+Node.js+Mongodb）](https://blog.csdn.net/weixin_42512937/article/details/102384942 "日志处理")
 
 6. **TinyMCE富文本编辑器**
-登录
+   1. 前端：  
+      * 包含图片上传功能（有对应的图片列表，包含图片的查看、删除），富文本的保存、查看、编辑、删除功能
+   2. 后端：
+      1. 引入的中间件
+         * fs（操作文件）
+         * multer（上传图片）
+      2. 通过multer定制图片存储的路径，调用了single单个图片上传函数
+      3. 返回给前端图片展示的路径，需要用到Express的static中间件函数，用服务器地址+文件路径即可访问（如`app.use(express.static('./upload/'))`；表示upload目录下的css、图像、js文件都可访问，访问时省略upload即可；如访问`http://localhost:3000/tinymce/xxx.jpg`，表示访问的upload目录下的tinymce文件下的xxx.jpg图像）
+         
+   3. 参考[Vue+Node.js+TinyMCE富文本编辑器+express+multer图片上传](https://blog.csdn.net/weixin_42512937/article/details/102570051 "涉及上传图片，解析，存储路径；node接收formData数据；Express中提供静态文件等")
 
 
 ******
