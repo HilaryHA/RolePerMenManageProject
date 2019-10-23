@@ -74,7 +74,6 @@ npm run dev     #运行项目
          * 根据用户userId去users_roles用户角色表，找到所有对应的角色roleId
          * 然后通过roleId去role_permission角色权限表中找到对应的权限数组（其中需要去重处理，因为多个角色中，对应的某些权限选项可能相同）
 
-
 4. **支付功能**
    1. 前端：  
       * 订单支付页面中，创建订单之后，打开后端返回的支付url，用自己的沙箱账号支付即可
@@ -86,7 +85,17 @@ npm run dev     #运行项目
    3. 实现步骤参考 [Vue node.js实现支付宝支付(沙箱测试)](https://blog.csdn.net/weixin_42512937/article/details/101108086 "支付宝沙箱支付")
 
 5. **日志生成**
-登录
+   1. 前端：  
+      * 日志页面，可通过日期进行模糊查询，默认查询当天的日志（每一个请求都会生成一条日志）
+   2. 后端：
+      1. 引入的中间件
+         * log4js（日志处理模块）
+         * fs（操作文件）
+         * readline（按行读取）
+         * domain（处理异常）
+      2. ====================哈哈哈哈哈哈哈哈哈哈或或或或或或
+      
+   3. 参考 [Nodejs+Log4js日志的使用（环境：Vue+Node.js+Mongodb）](https://blog.csdn.net/weixin_42512937/article/details/102384942 "日志处理")
 
 6. **TinyMCE富文本编辑器**
 登录
