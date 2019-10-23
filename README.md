@@ -28,7 +28,7 @@ npm run dev     #运行项目
 *****
 ### 项目环境
 -----
-1. 由Vue + Node + Mongodb组成
+1. 由Vue + Node + Mongodb组成:  
   【前端】页面运用ElementUI组件和Vue进行展示  
   【数据库】选择的是非关系型数据库Mongodb  
   【后端】通过Node处理数据库与前端的交互  
@@ -46,15 +46,15 @@ npm run dev     #运行项目
 ### 功能说明
 -----
 1. **登录**
-  1. 前端：
-    * 登录成功后，根据后端返回的token值，添加到请求头上"Content-Type"的Authorization字段中，使每次请求就会携带对应的token值   
-  2. 后端：
-    1. 封装检验token值的函数，token的生成原理    
-      * 通过openSSL工具生成私钥、公钥  
-      * Node中引入中间件：fs（用于读取公钥、私钥文件），jsonwebtoken（跨域认证，利用sign函数生成token，然后verify函数验证token）
-    2. 注册时加密密码原理：
-      * Node中引入中间件：fs（用于读取公钥、私钥文件），crypto（提供通用的加密和哈希算法）  
-      * 通过私钥加密、公钥解密的方式，参考[Node.js+crypto模块之用户密码加密解密](https://blog.csdn.net/weixin_42512937/article/details/100739890)
+   1. 前端：  
+      * 登录成功后，根据后端返回的token值，添加到请求头上"Content-Type"的Authorization字段中，使每次请求就会携带对应的token值   
+   2. 后端： 
+      1. 封装检验token值的函数，token的生成原理    
+        * 通过openSSL工具生成私钥、公钥  
+        * Node中引入中间件：fs（用于读取公钥、私钥文件），jsonwebtoken（跨域认证，利用sign函数生成token，然后verify函数验证token）
+      2. 注册时加密密码原理：
+        * Node中引入中间件：fs（用于读取公钥、私钥文件），crypto（提供通用的加密和哈希算法）  
+        * 通过私钥加密、公钥解密的方式，参考[Node.js+crypto模块之用户密码加密解密](https://blog.csdn.net/weixin_42512937/article/details/100739890)
 
 2. **菜单**
 登录
