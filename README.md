@@ -10,35 +10,12 @@
 
 ****
 ## 目录
+* [项目环境](#项目环境)
 * [版本说明](#版本说明)
 * [文件说明](#文件说明)
-* [项目环境](#项目环境)
 * [功能说明](#功能说明)
 * [备注说明](#备注说明)
 
-
-*****
-### 版本说明
------
-1. Node.js == v10.13.0
-2. Npm == 6.10.3
-3. Vue == 2.5.2
-4. vue-router == 3.0.1
-
-  
-*****
-### 文件说明
-------
-1. 【mongodbDatabase.zip】对应的数据库，具体导入、导出操作参考 [MongoDB之数据的备份、还原、导出、导入等简单操作](https://blog.csdn.net/weixin_42512937/article/details/102498644 "Mongodb数据库操作")
-2. 【server】对应后端node（具体操作，在server文件下的readme.md文件中）
-3. 【其他文件】对应Vue项目，运行以下命令，即可运行
-> npm install   #安装所有需要的插件包  
-npm run dev     #运行项目
-4. 【注意运行顺序】 
-   1. 先开启mongodb服务  `net start mongodb` (以管理身份打开cmd窗口)
-   2. 然后运行node服务   `node app.js` (在server目录下的命令窗口执行)
-   3. 最后执行Vue项目 `npm install` 、 `npm run dev` （在当前目录下执行）
-  
   
 *****
 ### 项目环境
@@ -56,6 +33,31 @@ npm run dev     #运行项目
   - [ ] 支付功能（使用沙箱环境）
   - [ ] 日志生成（利用log4js、Express和Node的结合）
   - [ ] TinyMCE富文本编辑器（主要有图片上传功能；保存、修改、查看编辑的文本）等
+
+*****
+### 版本说明
+-----
+1. Node.js == v10.13.0
+2. Npm == 6.10.3
+3. Vue == 2.5.2
+4. vue-router == 3.0.1
+5. element-ui == ^2.12.0
+
+  
+*****
+### 文件说明
+------
+1. 【mongodbDatabase.zip】对应的数据库，具体导入、导出操作参考 [MongoDB之数据的备份、还原、导出、导入等简单操作](https://blog.csdn.net/weixin_42512937/article/details/102498644 "Mongodb数据库操作")
+2. 【server】对应后端node（具体操作，在server文件下的readme.md文件中）
+3. 【其他文件】对应Vue项目，运行以下命令，即可运行
+> npm install   #安装所有需要的插件包  
+npm run dev     #运行项目
+4. 【注意运行顺序】 
+   1. 先开启mongodb服务  `net start mongodb` (以管理身份打开cmd窗口)
+   2. 然后运行node服务   `node app.js` (在server目录下的命令窗口执行)
+   3. 最后执行Vue项目 `npm install` 、 `npm run dev` （在当前目录下执行）
+  
+
 
 *****
 ### 功能说明
