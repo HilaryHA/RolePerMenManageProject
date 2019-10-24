@@ -38,7 +38,7 @@
           <template slot-scope="scope">
              <el-image
               :src="scope.row.priview_url" 
-              :preview-src-list="priviewUrlList">
+              :preview-src-list="getPriviewUrlList(scope.$index)">
             </el-image>
           </template>
         </el-table-column>
@@ -127,7 +127,6 @@ export default {
   },
   watch: {
     data: function(newValue, oldVale) {
-      console.log('data------', newValue, oldVale);
       this.getAllImgList(newValue);
     }
   },
@@ -159,7 +158,6 @@ export default {
     },
 
     async subDelete(_id) {
-      console.log(_id);
       this.delLoading = true;
       let deleteId = await delImage(_id);
       if (deleteId.data && deleteId.data.status == 200) {
@@ -180,7 +178,11 @@ export default {
           this.priviewUrlList.push(item.priview_url);
         })
       }
-      console.log('this.priviewUrlList=======', this.priviewUrlList)
+    },
+
+    // 大图预览时，定位当前图片的index
+    getPriviewUrlList(index) {
+      return this.priviewUrlList.slice(index).concat(this.priviewUrlList.slice(0, index));
     }
 
   }
