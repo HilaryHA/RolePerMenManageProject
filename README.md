@@ -14,6 +14,7 @@
 * [文件说明](#文件说明)
 * [项目环境](#项目环境)
 * [功能说明](#功能说明)
+* [备注说明](#备注说明)
 
 
 *****
@@ -123,6 +124,25 @@ npm run dev     #运行项目
       3. 返回给前端图片展示的路径，需要用到Express的static中间件函数，用服务器地址+文件路径即可访问（如`app.use(express.static('./upload/'))`；表示upload目录下的css、图像、js文件都可访问，访问时省略upload即可；如访问`http://localhost:3000/tinymce/xxx.jpg`，表示访问的upload目录下的tinymce文件下的xxx.jpg图像）
          
    3. 参考[Vue+Node.js+TinyMCE富文本编辑器+express+multer图片上传](https://blog.csdn.net/weixin_42512937/article/details/102570051 "涉及上传图片，解析，存储路径；node接收formData数据；Express中提供静态文件等")
+
+
+*****
+### 备注说明
+-----
+1. **跨域问题**
+   1.本项目是后端（node.js）处理的
+
+2. **前端权限控制，两种方式**
+    1. 自定义指令v-permission，参数为该组件对应的可显示权限数组值
+       * 如：v-permission="['ADMIN','PERMISSION_ALL', 'PERMISSION_EDIT']"
+    2. 通过检验函数checkPermission，参数为该组件对应的可显示权限数组值
+       * 如：v-if="checkPermission(['ADMIN','PERMISSION_ALL', 'PERMISSION_EDIT', 'PERMISSION_DELETE'])"
+    自己坑自己
+
+3. **全局守卫问题**
+    1. 全局守卫写在了roter文件下的index.js文件中，因为一般直接写在main.js，我把它单独抽了出来，还给忘记啦哈哈
+    2. 具体参考 [Vue动态路由、菜单（解决了刷新菜单空白问题） 全局前置守卫](https://blog.csdn.net/weixin_42512937/article/details/100778840 "动态路由、全局守卫")
+
 
 
 ******
