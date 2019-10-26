@@ -29,7 +29,7 @@
 <script>
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-import { getPerm, add, edit } from '@/api/otherApi/purview'
+import { getPerm, add, edit } from "@/api/otherApi/purview";
 export default {
   components: {
     Treeselect
@@ -49,12 +49,14 @@ export default {
     return {
       dialogVisible: false, // 弹窗是否出现
       loading: false, // 确定
-      purviews: [{
-        label: "顶级类目",
-        id: 0,
-        name: "TOP_PARENT",
-        children: []
-      }], // 所有权限
+      purviews: [
+        {
+          label: "顶级类目",
+          id: 0,
+          name: "TOP_PARENT",
+          children: []
+        }
+      ], // 所有权限
       form: {
         id: 1,
         name: "",

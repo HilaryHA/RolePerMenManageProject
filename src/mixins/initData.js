@@ -1,7 +1,7 @@
 /**
  * 获取表格数据
  * @author Hilary
- * @data 2019/06/06
+ * @date 2019/06/06
  */
 import { getInitData } from '@/api/otherApi/data'
 
@@ -31,20 +31,20 @@ export default {
       return new Promise((resolve, reject) => {
         this.loading = true;
         getInitData(this.url, this.params).then(res => {
-            // console.table(res.data)
-            if (res.data.status == 200) {
-              this.total = res.data.totalElements;
-              if (res.data.content) {
-                this.data = res.data.content;
-              } else if (res.data.data) {
-                this.data = res.data.data;
-              }
-              // console.log(this.data);
+          // console.table(res.data)
+          if (res.data.status == 200) {
+            this.total = res.data.totalElements;
+            if (res.data.content) {
+              this.data = res.data.content;
+            } else if (res.data.data) {
+              this.data = res.data.data;
             }
-            setTimeout(() => {
-              this.loading = false;
-            }, this.time);
-            resolve(res); // 成功时必须要执行此回调
+            // console.log(this.data);
+          }
+          setTimeout(() => {
+            this.loading = false;
+          }, this.time);
+          resolve(res); // 成功时必须要执行此回调
         }).catch(err => {
           // console.log('err================', err);
           this.loading = false;

@@ -25,8 +25,7 @@ export default {
     // 打开编辑
     toEdit() {
       const _this = this.$refs.form;
-      _this.getSingleUser(this.data.id)
-      .then(temp => {
+      _this.getSingleUser(this.data.id).then(temp => {
         _this.form = {
           /* 赋值部分值给form组件中的form对象 */
           id: temp.id,
@@ -37,7 +36,7 @@ export default {
         };
         _this.getRolesList();
         _this.dialogVisible = true; // 打开弹窗
-      })
+      });
     }
   }
 };

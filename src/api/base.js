@@ -1,6 +1,6 @@
 /**  
  *  @author Hilary
- *  @data  2019/05/04
+ *  @date  2019/05/04
  *  @version 1.0.1
  *  @parameter  接口域名的管理
  */

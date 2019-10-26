@@ -40,8 +40,8 @@ export default {
         legend: {
           orient: "vertical",
           x: "left",
-          left: '40',
-          top: '40',
+          left: "40",
+          top: "40",
           data: [
             "直达",
             "营销广告",
@@ -76,9 +76,14 @@ export default {
               }
             },
             data: [
-              { value: 335, name: "直达", selected: true , itemStyle: {color: '#2ec7c9'}},
-              { value: 679, name: "营销广告" , itemStyle: {color: '#b6a2de'}},
-              { value: 1548, name: "搜索引擎" , itemStyle: {color: '#5ab1ef'}}
+              {
+                value: 335,
+                name: "直达",
+                selected: true,
+                itemStyle: { color: "#2ec7c9" }
+              },
+              { value: 679, name: "营销广告", itemStyle: { color: "#b6a2de" } },
+              { value: 1548, name: "搜索引擎", itemStyle: { color: "#5ab1ef" } }
             ]
           },
           {
@@ -130,14 +135,14 @@ export default {
             //   }
             // },
             data: [
-              { value: 335, name: "直达" , itemStyle: {color: '#2ec7c9'}},
-              { value: 310, name: "邮件营销" , itemStyle: {color: '#ffb980'}},
-              { value: 234, name: "联盟广告" , itemStyle: {color: '#d87a80'}},
-              { value: 135, name: "视频广告" , itemStyle: {color: '#8d98b3'}},
-              { value: 1048, name: "百度" , itemStyle: {color: '#e5cf0d'}},
-              { value: 251, name: "谷歌" , itemStyle: {color: '#97b552'}},
-              { value: 147, name: "必应" , itemStyle: {color: '#95706d'}},
-              { value: 102, name: "其他" , itemStyle: {color: '#dc69aa'}}
+              { value: 335, name: "直达", itemStyle: { color: "#2ec7c9" } },
+              { value: 310, name: "邮件营销", itemStyle: { color: "#ffb980" } },
+              { value: 234, name: "联盟广告", itemStyle: { color: "#d87a80" } },
+              { value: 135, name: "视频广告", itemStyle: { color: "#8d98b3" } },
+              { value: 1048, name: "百度", itemStyle: { color: "#e5cf0d" } },
+              { value: 251, name: "谷歌", itemStyle: { color: "#97b552" } },
+              { value: 147, name: "必应", itemStyle: { color: "#95706d" } },
+              { value: 102, name: "其他", itemStyle: { color: "#dc69aa" } }
             ]
           }
         ]

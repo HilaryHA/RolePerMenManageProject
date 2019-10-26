@@ -1,5 +1,8 @@
 /**
- * @description 系统全局配置
+ *  @author Hilary
+ *  @date  2019/06/04
+ *  @version 1.0.0
+ *  @description 系统全局配置
  */
 export default {
   /**

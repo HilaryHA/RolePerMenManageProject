@@ -1,7 +1,7 @@
 /**
  * 连接数据库
  * @author Hilary
- * @data 2019/06/06
+ * @date 2019/06/06
  */
 
 // 引入mongoose模块

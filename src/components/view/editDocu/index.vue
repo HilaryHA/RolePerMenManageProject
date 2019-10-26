@@ -15,7 +15,7 @@
         <el-button type="primary" size="mini" @click="clear">清空内容</el-button>
         <el-button type="danger" size="mini" @click="disabled = true">禁用</el-button>
         <el-button type="warning" size="mini" @click="disabled = false">启用</el-button>
-        <el-button type="success" size="mini" @click="doSubmit">{{ isEdit ? '修改' : '保存' }}</el-button>        
+        <el-button type="success" size="mini" @click="doSubmit">{{ isEdit ? '修改' : '保存' }}</el-button>
       </el-row>
     </div>
   </div>
@@ -34,13 +34,13 @@ export default {
   mixins: [initPerm],
   data() {
     return {
-      textData: {        
+      textData: {
         title: "Here enter your title.",
         html_text: "Welcome to Use Tinymce Editor"
       },
       disabled: false,
       isEdit: false, // 是否编辑
-      checkPermArr: ['ADMIN', 'EDITINFO_CREATE', 'EDITINFO_EDIT']
+      checkPermArr: ["ADMIN", "EDITINFO_CREATE", "EDITINFO_EDIT"]
     };
   },
   created() {
@@ -67,18 +67,18 @@ export default {
     },
     // 保存文档
     async doSubmit() {
-      let obj = {...this.textData};
+      let obj = { ...this.textData };
       if (this.isEdit) {
         let editDa = await edit(obj);
-        if(editDa.data.status == 200) {
+        if (editDa.data.status == 200) {
           this.textData = {};
-          this.$router.push({ path: '/ed/docuInfo' });
+          this.$router.push({ path: "/ed/docuInfo" });
         }
-      } else {        
+      } else {
         let addDa = await add(obj);
-        if(addDa.data.status == 200) {
+        if (addDa.data.status == 200) {
           this.textData = {};
-          this.$router.push({ path: '/ed/docuInfo' });
+          this.$router.push({ path: "/ed/docuInfo" });
         }
       }
     }

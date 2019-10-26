@@ -1,6 +1,6 @@
 /**
  *  @author Hilary
- *  @data  2019/05/04
+ *  @date  2019/05/04
  *  @version 1.0.0
  *  @parameter  api接口的统一出口
  */

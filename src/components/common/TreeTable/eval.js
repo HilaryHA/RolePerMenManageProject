@@ -1,6 +1,7 @@
 /**
- * @author: Hilary
- * @Date: 2019/06/10
+ * @author Hilary
+ * @Date 2019/06/10
+ * @parameter 将tree树的数据转换为数组
  */
 'use strict'
 import Vue from 'vue'
@@ -21,7 +22,10 @@ export default function treeToArray(data, expandAll, parent = null, level = null
       Vue.set(record, 'parent', parent);
     }
     tmp.push(record);
-    // console.log('=====================', record.children); // 报错children 和 默认的expand为true时 子选项未出现有关
+
+    // console.log('=====================', record.children);
+    // 【报错】children 和 默认的expand为true时 子选项未出现有关
+
     if (record.children && record.children.length > 0) {
       const children = treeToArray(record.children, expandAll, record, _level);
       tmp = tmp.concat(children);

@@ -52,7 +52,7 @@
   </div>
 </template>
 <script>
-import { add, edit } from '@/api/otherApi/role'
+import { add, edit } from "@/api/otherApi/role";
 export default {
   props: {
     isAdd: {
@@ -127,7 +127,7 @@ export default {
       if (addMenu.data.status == 200) {
         this.loading = false;
         this.resetForm();
-        this.$parent.$parent.init();  // 获取表格数据
+        this.$parent.$parent.init(); // 获取表格数据
       } else {
         this.cancel();
       }
@@ -139,7 +139,7 @@ export default {
       if (editMenu.data.status == 200) {
         this.loading = false;
         this.resetForm();
-        this.sup_this.init();  // 获取表格数据
+        this.sup_this.init(); // 获取表格数据
       } else {
         this.cancel();
       }

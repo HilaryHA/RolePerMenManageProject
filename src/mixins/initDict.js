@@ -1,9 +1,14 @@
-import {get} from '@/api/otherApi/dictDetail'
+/**
+ * 获取数据字典
+ * @author Hilary
+ * @date 2019/06/06
+ */
+import { get } from '@/api/otherApi/dictDetail'
 
 export default {
   data() {
     return {
-      dicts: [] // 数据字典
+      dicts: []
     }
   },
   methods: {

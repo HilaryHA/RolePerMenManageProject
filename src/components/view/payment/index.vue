@@ -12,10 +12,17 @@
             <el-step title="步骤 3" icon="el-icon-s-check"></el-step>
           </el-steps>
         </el-col>
-      </el-row> -->
+      </el-row>-->
       <el-row type="flex" justify="center" class="cont-main">
         <el-col :span="22" class="cont-form">
-          <el-form ref="form" :model="form" :rules="formRules" label-width="80px" size="mini" v-if="stepActive === 0">
+          <el-form
+            ref="form"
+            :model="form"
+            :rules="formRules"
+            label-width="80px"
+            size="mini"
+            v-if="stepActive === 0"
+          >
             <el-form-item label="订单名称" required prop="name">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
@@ -56,7 +63,7 @@
             <el-form-item>
               <el-button type="primary" @click="onSubmitThr">完成</el-button>
             </el-form-item>
-          </el-form> -->
+          </el-form>-->
         </el-col>
       </el-row>
     </div>
@@ -64,7 +71,7 @@
 </template>
 
 <script>
-import { doPay, queryPay } from '@/api/otherApi/payment';
+import { doPay, queryPay } from "@/api/otherApi/payment";
 import initPerm from "@/mixins/initPerm";
 export default {
   // 混入，分发复用功能（是否有权限打开此页面）
@@ -82,11 +89,9 @@ export default {
         remarks: "测试"
       },
       formRules: {
-        name: [
-          { required: true, message: '请输入订单名称', trigger: 'blur' }
-        ]
+        name: [{ required: true, message: "请输入订单名称", trigger: "blur" }]
       },
-      checkPermArr: ['ADMIN', 'PAY_CREATE']
+      checkPermArr: ["ADMIN", "PAY_CREATE"]
     };
   },
   created() {
@@ -94,7 +99,7 @@ export default {
   },
   methods: {
     onSubmit(refName) {
-      this.$refs[refName].validate(async (valid) => {
+      this.$refs[refName].validate(async valid => {
         // 【注意】 标签属性prop的字段名和v-model的属性名一致
         if (valid) {
           let tempDa = await doPay(this.form);
@@ -106,16 +111,20 @@ export default {
           // console.log('error submit!!');
           return false;
         }
-      });      
+      });
     },
 
-    changePrice () {
+    changePrice() {
       // 价格依次对应： 苹果、芒果、火龙果、橙子
-      let aCash = 8, mCash = 12, dCash = 15, oCash = 10;
-      this.form.price = this.form.fruitApple * aCash 
-        + this.form.fruitMango * mCash 
-        + this.form.fruitDragonFruit * dCash 
-        + this.form.fruitOrange * oCash;
+      let aCash = 8,
+        mCash = 12,
+        dCash = 15,
+        oCash = 10;
+      this.form.price =
+        this.form.fruitApple * aCash +
+        this.form.fruitMango * mCash +
+        this.form.fruitDragonFruit * dCash +
+        this.form.fruitOrange * oCash;
     },
 
     // 判断是否支付页面跳转过来
@@ -123,7 +132,7 @@ export default {
       let query = this.$route.query;
       // 判断是否为空对象
       if (Object.keys(query).length > 0) {
-        let outTradeNo = query['out_trade_no'];
+        let outTradeNo = query["out_trade_no"];
         let data = await queryPay(outTradeNo);
       }
     }
@@ -137,7 +146,6 @@ export default {
     //   console.log("submit!");
     //   this.stepActive = 0;
     // }
-
   }
 };
 </script>
@@ -149,7 +157,7 @@ export default {
       margin-top: 20px;
     }
     .cont-form {
-      background: #FFF;
+      background: #fff;
       padding: 40px 20px;
       .el-form {
         width: 380px;
@@ -164,7 +172,7 @@ export default {
       }
     }
     .el-steps--simple {
-      background: #FFF;
+      background: #fff;
       .el-step__title {
         font-size: 14px;
       }

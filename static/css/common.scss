@@ -1,25 +1,25 @@
 // 图标
 .icon {
-    width: 30px;
-    height: 30px;
-    vertical-align: -0.15em;
-    fill: currentColor;
-    overflow: hidden;
+  width: 30px;
+  height: 30px;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
 }
 
 // 菜单图标
 .icon-title {
-    width: 18px;
-    height: 18px;
-    vertical-align: -3px;
+  width: 18px;
+  height: 18px;
+  vertical-align: -3px;
 }
 
 // 菜单收缩后
 .el-menu--vertical {
-    .el-menu-item {
-        height: 46px;
-        line-height: 46px;
-    }
+  .el-menu-item {
+    height: 46px;
+    line-height: 46px;
+  }
 }
 
 // 主要内容公告样式
@@ -27,6 +27,7 @@
   background: #f0f2f5;
   padding: 20px;
   font-size: 12px;
+
   .my-head {
     display: flex;
     justify-content: space-between;
@@ -45,7 +46,8 @@
     line-height: 20px;
     padding-bottom: 8px;
   }
-  .operat_btn{
+
+  .operat_btn {
     display: grid;
     grid-template-columns: 80px auto;
     grid-column-gap: 10px;
@@ -63,12 +65,14 @@
 }
 
 // 表单树形选择样式
-.el-form-item__content{
+.el-form-item__content {
   font-size: 12px;
+
   .vue-treeselect__control {
     margin-top: 2px;
     height: 30px;
     line-height: 30px;
+
     .vue-treeselect__single-value {
       line-height: 28px;
     }

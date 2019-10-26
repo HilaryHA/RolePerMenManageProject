@@ -1,6 +1,6 @@
 /**
  *  @author Hilary
- *  @data  2019/05/04
+ *  @date  2019/05/04
  *  @version 1.0.0
  *  @parameter  封装axios，请求拦截、响应拦截、错误统一处理
  */
@@ -10,7 +10,7 @@ import store from '../store';
 import Element from 'element-ui';
 
 /**
- *  提示函数 ---  此处有问题
+ *  提示函数
  */
 const tip = msg => {
     Element.Message({
@@ -33,7 +33,7 @@ const toLogin = () => {
                 redirect: router.currentRoute.fullPath
             }
         });
-    }    
+    }
 }
 
 /**
@@ -42,20 +42,20 @@ const toLogin = () => {
  */
 const errorHandle = (status, other) => {
     // 状态码判断
-    switch(status) {
+    switch (status) {
         // 200: 后台返回错误信息
-        case 200:        
-           if (other.info.includes('expired')) {
-               // TokenExpiredError: jwt expired
-               tip('登录超时，请重新登录');
-               toLogin();
-           } else if (other.status == 401 || other.status == 403) {
-               tip(`${other.status} : ${other.info}`);
-               toLogin();
-           } else {
-               tip(other.info);
-           }
-           break;
+        case 200:
+            if (other.info.includes('expired')) {
+                // TokenExpiredError: jwt expired
+                tip('登录超时，请重新登录');
+                toLogin();
+            } else if (other.status == 401 || other.status == 403) {
+                tip(`${other.status} : ${other.info}`);
+                toLogin();
+            } else {
+                tip(other.info);
+            }
+            break;
         // 401: 未登录状态，跳转登录页
         case 401:
             tip('未登录，请重新登录');
@@ -65,7 +65,6 @@ const errorHandle = (status, other) => {
         // 清除token并跳转登录页
         case 403:
             tip('登录过期，请重新登录');
-            //---------vuex里存储loginSuccess和清除localStorage的token
             setTimeout(() => {
                 toLogin();
             }, 1000);
@@ -74,7 +73,7 @@ const errorHandle = (status, other) => {
         case 404:
             tip('请求的资源不存在');
             break;
-        //----------其他状态码
+        //其他状态码
         default:
             tip(other);
             console.log(status, other);
@@ -87,12 +86,12 @@ const errorHandle = (status, other) => {
  * @type {AxiosInstance}
  */
 let instance = axios.create({
-  timeout: 1000 * 12,
-  withCredentials: true, // 允许跨域携带cookie信息
-  headers: {  // 清除IE缓存
-    'Cache-Control': 'no-cache',
-    'Pragma': 'no-cache'
-  }
+    timeout: 1000 * 12,
+    withCredentials: true, // 允许跨域携带cookie信息
+    headers: {  // 清除IE缓存
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+    }
 });
 
 /**
@@ -112,15 +111,9 @@ instance.interceptors.request.use(
         // 但是即使token存在，也有可能token是过期的，所以在每次的请求头中携带token
         // 后台根据携带的token判断用户的登录情况，并返回给我们对应的状态码
         // 而后我们可以在响应拦截器中，根据状态码进行一些统一的操作。
-        //-------------------
-        // console.log('-------------------token-----------');
-        // console.log(store.state.user.token);
-        
-        // 未完成功能-------*********------后端设置token值，一般返回的是一串字符串，参考https://juejin.im/post/5bab739af265da0aa3593177#heading-2
+
         // 接口除了登录，都通过token值进行获取对应的数据
         const token = JSON.stringify(store.state.user.token);
-        // const token = store.state.user.token;
-        
         token && (config.headers.Authorization = token);
         config.headers.Accept = "application/json, text/plain, */*";  // 指定客户端能够接收的内容类型
         return config;
@@ -132,25 +125,22 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     // 请求成功
     res => {
-      if(res.status === 200) {
-        // if ( res.data.status == -1 ) {
-        //   errorHandle(res.status, res.data.info);
-        // }
-        if (res.data.status == -1 || res.data.status == 401 || res.data.status == 403) {
-            errorHandle(res.status, res.data);
+        if (res.status === 200) {
+            if (res.data.status == -1 || res.data.status == 401 || res.data.status == 403) {
+                errorHandle(res.status, res.data);
+            }
+            Promise.resolve(res);
+        } else {
+            Promise.reject(res);
         }
-        Promise.resolve(res);
-      } else {
-        Promise.reject(res);
-      }
-      return res; // 打印为undefined，因为此处未return
+        return res; // 打印为undefined，因为此处未return
     },
     // 请求失败
     error => {
         const { response } = error; //即error.response的值赋值给变量response
         console.log('================');
         console.info(response, error);
-      if (response) {
+        if (response) {
             // 请求已发出，但是不在2xx的范围
             errorHandle(response.status, response.data.info);
             return Promise.reject(response);

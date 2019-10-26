@@ -26,6 +26,9 @@
 </template>
 
 <script>
+/**
+ * 404页面
+ */
 export default {
   data() {
     return {};

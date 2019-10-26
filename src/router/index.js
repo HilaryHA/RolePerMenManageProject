@@ -3,7 +3,8 @@ import store from '@/store'
 import Config from '@/config'
 
 /**
- * 全局守卫，路由菜单加载---判断是否有用户信息
+ * 全局守卫，路由菜单加载
+ * 判断用户是否登录就访问
  */
 router.beforeEach((to, from, next) => {
   if (to.name) {

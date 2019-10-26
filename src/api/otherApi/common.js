@@ -1,6 +1,6 @@
 /**  
  *  @author Hilary
- *  @data  2019/05/04
+ *  @date  2019/05/04
  *  @parameter  公共接口需要的函数
  */
 import Element from 'element-ui';

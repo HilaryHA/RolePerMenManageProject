@@ -11,7 +11,7 @@
       :data="data"
       :columns="columns"
       size="small"
-      >
+    >
       <el-table-column label="状态" align="center" min-width="100px">
         <template slot-scope="scope">
           <div v-for="item in dicts" :key="item.sort">
@@ -37,7 +37,7 @@
         label="操作"
         align="center"
         min-width="150px"
-        >
+      >
         <template slot-scope="scope">
           <e-edit
             v-permission="['ADMIN','DEPT_ALL', 'DEPT_EDIT']"
@@ -52,7 +52,7 @@
             :ref="scope.row.id"
             trigger="click"
             popper-class="operat_pop"
-            >
+          >
             <p class="operat_text">确定删除{{ scope.row.name }}数据吗？</p>
             <div class="operat_btn">
               <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
@@ -63,7 +63,6 @@
                 @click="subDelete(scope.row.id)"
               >确定</el-button>
             </div>
-            <!--<el-tooltip content="删除" placement="top" effect="light">-->
             <el-button
               slot="reference"
               :disabled="scope.row.id === 1"
@@ -71,7 +70,6 @@
               icon="el-icon-delete"
               size="mini"
             ></el-button>
-            <!--</el-tooltip>-->
           </el-popover>
         </template>
       </el-table-column>

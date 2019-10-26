@@ -321,11 +321,7 @@
                 class="st8"
                 font-size="24.025"
               >Permission denied.</text>
-              <text 
-                transform="translate(548 285)"
-                class="st8 st10"
-                font-size="21"
-              >Go to Login.</text>
+              <text transform="translate(548 285)" class="st8 st10" font-size="21">Go to Login.</text>
             </g>
             <g id="ladders">
               <g id="ladder-f">
@@ -347,7 +343,7 @@
           </g>
         </g>
       </svg>
-      <router-link class="go-ba" :to="'/'" tag="div"></router-link>
+      <router-link class="go-ba" :to="loginUrl" tag="div"></router-link>
     </div>
   </div>
 </template>
@@ -355,7 +351,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      loginUrl: "/"
+    };
   }
 };
 </script>

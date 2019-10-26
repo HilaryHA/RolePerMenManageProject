@@ -40,7 +40,6 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
-      // console.log(`每页 ${val} 条`, this, this.sup_this instanceof Object);
       if (this.sup_this instanceof Object) {
         this.sup_this.sizeChange(val);
       } else {
@@ -48,12 +47,11 @@ export default {
       }
     },
     handleCurrentChange(val) {
-      // console.log(`当前页: ${val}`);
       if (this.sup_this instanceof Object) {
         this.sup_this.pageChange(val);
       } else {
         this.$parent.pageChange(val);
-      }      
+      }
     }
   }
 };

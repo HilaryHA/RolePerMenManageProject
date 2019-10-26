@@ -51,7 +51,7 @@
         label="操作"
         align="center"
         min-width="150px"
-        >
+      >
         <template slot-scope="scope">
           <e-edit
             v-permission="['ADMIN','MENU_ALL', 'MENU_EDIT']"
@@ -65,7 +65,7 @@
             :ref="scope.row.id"
             trigger="click"
             popper-class="operat_pop"
-            >
+          >
             <p class="operat_text">确定删除吗,如果存在下级节点则一并删除，此操作不能撤销！</p>
             <div class="operat_btn">
               <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>

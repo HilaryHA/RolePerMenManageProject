@@ -54,16 +54,22 @@ export default {
     }
   }
   .view_text {
-    ol, ul {
+    ol,
+    ul {
       list-style: decimal;
       li {
         line-height: 26px;
       }
     }
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       font-size: 16px;
       font-weight: bold;
     }
-  }  
+  }
 }
 </style>

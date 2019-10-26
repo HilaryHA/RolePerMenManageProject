@@ -7,7 +7,7 @@
       center
       :append-to-body="true"
       custom-class="user-dialog"
-      >
+    >
       <el-form :model="form" ref="form" size="mini" label-width="80px" :rules="rulesForm">
         <el-form-item label="用户名" prop="name">
           <el-input type="text" v-model="form.name" autocomplete="off" placeholder="用户名"></el-input>
@@ -17,12 +17,7 @@
         </el-form-item>
         <el-form-item label="角色" prop="roles">
           <el-select v-model="form.roles" multiple placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
-            </el-option>
+            <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="密码" prop="password">
@@ -39,7 +34,7 @@
 <script>
 // import { getPerm, add, edit } from "@/api/otherApi/purview";
 import userInfo from "@/api/otherApi/userInfo";
-import {  getRoles } from "@/api/otherApi/role";
+import { getRoles } from "@/api/otherApi/role";
 export default {
   props: {
     isAdd: {
@@ -58,9 +53,9 @@ export default {
       loading: false, // 确定
       form: {
         // id: '',
-        name: '',
-        alias: '',
-        password: '',
+        name: "",
+        alias: "",
+        password: "",
         roles: []
       },
       rulesForm: {
@@ -150,15 +145,15 @@ export default {
       this.dialogVisible = false;
       this.$refs["form"].resetFields();
       this.form = {
-        id: '',
-        name: '',
-        alias: '',
-        password: ''
+        id: "",
+        name: "",
+        alias: "",
+        password: ""
       };
     },
 
     // 获取权限信息
-    async getRolesList () {
+    async getRolesList() {
       let allRoles = await getRoles();
       if (allRoles.data.status == 200) {
         this.options = allRoles.data.content;
@@ -166,7 +161,7 @@ export default {
     },
 
     // 获取对应用户数据
-    async getSingleUser (id) {
+    async getSingleUser(id) {
       let obj = {};
       let sinUser = await userInfo.getUserById(id);
       if (sinUser.data.status == 200) {
@@ -174,7 +169,6 @@ export default {
       }
       return obj;
     }
-
   }
 };
 </script>

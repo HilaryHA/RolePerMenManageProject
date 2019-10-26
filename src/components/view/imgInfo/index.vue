@@ -36,10 +36,10 @@
         <el-table-column prop="suffix_name" label="后缀名" align="center" width="85"></el-table-column>
         <el-table-column prop="priview_url" label="展示图" align="center" width="100">
           <template slot-scope="scope">
-             <el-image
-              :src="scope.row.priview_url" 
-              :preview-src-list="getPriviewUrlList(scope.$index)">
-            </el-image>
+            <el-image
+              :src="scope.row.priview_url"
+              :preview-src-list="getPriviewUrlList(scope.$index)"
+            ></el-image>
           </template>
         </el-table-column>
         <el-table-column label="创建日期" align="center" min-width="120">
@@ -59,7 +59,7 @@
           label="操作"
           align="center"
           min-width="100px"
-          >
+        >
           <template slot-scope="scope">
             <el-popover
               v-permission="['ADMIN','FILE_ALL', 'FILE_DELETE']"
@@ -172,19 +172,20 @@ export default {
 
     // 图片列表
     getAllImgList(newData) {
-      if(newData.length) {
+      if (newData.length) {
         this.priviewUrlList = [];
         newData.forEach(item => {
           this.priviewUrlList.push(item.priview_url);
-        })
+        });
       }
     },
 
     // 大图预览时，定位当前图片的index
     getPriviewUrlList(index) {
-      return this.priviewUrlList.slice(index).concat(this.priviewUrlList.slice(0, index));
+      return this.priviewUrlList
+        .slice(index)
+        .concat(this.priviewUrlList.slice(0, index));
     }
-
   }
 };
 </script>

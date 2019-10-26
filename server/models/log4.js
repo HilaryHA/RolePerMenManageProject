@@ -1,7 +1,7 @@
 /**
  * 日志存储
  * @author Hilary
- * @data 2019/10/08
+ * @date 2019/10/08
  */
 var log4js = require('log4js');
 

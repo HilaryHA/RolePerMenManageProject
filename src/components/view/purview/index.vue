@@ -10,7 +10,7 @@
       :data="data"
       :columns="columns"
       size="mini"
-      >
+    >
       <el-table-column label="别名" prop="alias" align="center"></el-table-column>
       <el-table-column label="创建时间" prop="crate_time" min-width="150px">
         <template slot-scope="scope">
@@ -22,9 +22,18 @@
           <span>{{ formatDate(scope.row.update_time) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="checkPermission(['ADMIN','PERMISSION_ALL', 'PERMISSION_EDIT', 'PERMISSION_DELETE'])" label="操作" align="center" min-width="150px">
+      <el-table-column
+        v-if="checkPermission(['ADMIN','PERMISSION_ALL', 'PERMISSION_EDIT', 'PERMISSION_DELETE'])"
+        label="操作"
+        align="center"
+        min-width="150px"
+      >
         <template slot-scope="scope">
-          <e-edit v-permission="['ADMIN','PERMISSION_ALL', 'PERMISSION_EDIT']" :data="scope.row" :sup_this="sup_this"></e-edit>
+          <e-edit
+            v-permission="['ADMIN','PERMISSION_ALL', 'PERMISSION_EDIT']"
+            :data="scope.row"
+            :sup_this="sup_this"
+          ></e-edit>
           <el-popover
             v-permission="['ADMIN','PERMISSION_ALL', 'PERMISSION_DELETE']"
             placement="top"
@@ -32,7 +41,7 @@
             :ref="scope.row.id"
             trigger="click"
             popper-class="operat_pop"
-            >
+          >
             <p class="operat_text">确定删除吗,如果存在下级节点则一并删除，此操作不能撤销！</p>
             <div class="operat_btn">
               <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
@@ -43,13 +52,7 @@
                 @click="subDelete(scope.row.id)"
               >确定</el-button>
             </div>
-            <el-button
-              size="mini"
-              icon="el-icon-delete"
-              slot="reference"
-              type="danger"
-              title="删除"
-            ></el-button>
+            <el-button size="mini" icon="el-icon-delete" slot="reference" type="danger" title="删除"></el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -58,7 +61,7 @@
   </div>
 </template>
 <script>
-import checkPermission from '@/utils/permission';
+import checkPermission from "@/utils/permission";
 import treeTable from "@/components/common/TreeTable";
 import initData from "@/mixins/initData";
 import initDict from "@/mixins/initDict";
@@ -66,7 +69,7 @@ import eHeader from "./module/header";
 import eEdit from "./module/edit";
 import eFooter from "@/components/common/Footer";
 import { formatDate } from "@/utils/mUtils";
-import { del } from '@/api/otherApi/purview';
+import { del } from "@/api/otherApi/purview";
 export default {
   components: {
     treeTable,
@@ -121,7 +124,7 @@ export default {
       this.delLoading = true;
       let deleteId = await del(id);
       if (deleteId.data && deleteId.data.status == 200) {
-      this.delLoading = false;
+        this.delLoading = false;
         this.$refs[id].doClose();
         this.init();
       } else {

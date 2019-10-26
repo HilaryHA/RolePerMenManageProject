@@ -114,7 +114,7 @@ export default {
       }
     },
     user: function(newVal) {
-      if(newVal) {
+      if (newVal) {
         this.username = newVal.alias;
       }
     }

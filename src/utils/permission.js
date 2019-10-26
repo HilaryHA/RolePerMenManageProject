@@ -5,17 +5,19 @@ import store from '@/store'
  * @param {Array} value
  * @returns {boolean}
  */
-export default function  checkPermission (value) {
-  if ( value && Array.isArray(value) && value.length > 0 ) {
+export default function checkPermission(value) {
+  if (value && Array.isArray(value) && value.length > 0) {
     // 获取当前用户的权限值数组
     const roles = store.getters && store.getters.roles;
     // 该组件下对应的所有权限值数组
     const permissionRoles = value;
-    let  hasPermission = roles && roles.some(role => { // 存在其中一个对应权限即可 根据不同用户获取不同权限
+    let hasPermission = roles && roles.some(role => { // 存在其中一个对应权限即可 根据不同用户获取不同权限
       return permissionRoles.includes(role); // 数组是否包含此元素
     })
+    
     // console.log(hasPermission);
     // hasPermission = true; // 【测试】强行为true
+
     // 没有此角色权限时 返回false
     if (!hasPermission) {
       return false;

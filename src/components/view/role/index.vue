@@ -14,7 +14,7 @@
               class="box_option"
               size="mini"
               @change="changeRadio"
-              >
+            >
               <el-radio-button label="菜单分配"></el-radio-button>
               <el-radio-button label="权限分配"></el-radio-button>
             </el-radio-group>
@@ -28,7 +28,7 @@
               style="100%"
               size="mini"
               @current-change="setCheckedNodes"
-              >
+            >
               <el-table-column prop="name" label="名称" min-width="80"></el-table-column>
               <el-table-column prop="data_perm" label="数据权限"></el-table-column>
               <el-table-column prop="level" label="角色级别" align="center"></el-table-column>
@@ -44,7 +44,7 @@
                 label="操作"
                 align="center"
                 width="150px"
-                >
+              >
                 <template slot-scope="scope">
                   <e-edit
                     v-permission="['ADMIN','ROLE_ALL', 'ROLE_EDIT']"
@@ -58,7 +58,7 @@
                     :ref="scope.row.id"
                     trigger="click"
                     popper-class="operat_pop"
-                    >
+                  >
                     <p class="operat_text">确定删除吗,如果存在下级节点则一并删除，此操作不能撤销！</p>
                     <div class="operat_btn">
                       <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
@@ -152,7 +152,7 @@ import {
 } from "@/api/otherApi/role";
 import { getPerm } from "@/api/otherApi/purview";
 import menuList from "@/api/otherApi/menuList";
-import initData from '@/mixins/initData';
+import initData from "@/mixins/initData";
 export default {
   components: {
     eEdit,
@@ -230,26 +230,26 @@ export default {
     // 箭头函数，内部的this,默认指向Dom元素最外层this，避免指向window
     // 可以定义一个变量存储当前this
     _this.$nextTick(() => {
-        _this.init();
-        _this.changeRadio("菜单分配");
-    })
+      _this.init();
+      _this.changeRadio("菜单分配");
+    });
   },
   methods: {
     checkPermission,
     // 根据混入必须复写的初始化函数
-    beforeInit () {
-      this.url = 'role';
-      const sort = 'id,1';
+    beforeInit() {
+      this.url = "role";
+      const sort = "id,1";
       this.params = {
-          page: this.page,
-          size: this.size,
-          sort: sort
+        page: this.page,
+        size: this.size,
+        sort: sort
       };
       const query = this.query;
       // 根据自定义的herader组件中对应的字段名
       const value = query.value;
       if (value) {
-          this.params['name'] = value;
+        this.params["name"] = value;
       }
       return true;
     },
@@ -259,7 +259,7 @@ export default {
       this.delLoading = true;
       let deleteId = await del(id);
       if (deleteId.data && deleteId.data.status == 200) {
-      this.delLoading = false;
+        this.delLoading = false;
         this.$refs[id].doClose();
         this.init();
         this.currentId = 1 && this.data[0].id;
@@ -291,9 +291,9 @@ export default {
       this.menuChecked = [];
       this.menuExpand = [];
 
-      // this.$refs.tree.setCheckedKeys([1,2,4,6]);      
-      
-      let tempId = this.currentId || row && row.id;
+      // this.$refs.tree.setCheckedKeys([1,2,4,6]);
+
+      let tempId = this.currentId || (row && row.id);
 
       let oneMenus = await getOneRole(tempId);
       if (oneMenus.data.status == 200) {

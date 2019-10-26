@@ -39,7 +39,7 @@
           label="操作"
           align="center"
           min-width="100px"
-          >
+        >
           <template slot-scope="scope">
             <el-popover
               v-permission="['ADMIN','LOG_ALL', 'LOG_DELETE']"

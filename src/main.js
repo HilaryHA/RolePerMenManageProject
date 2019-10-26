@@ -7,7 +7,7 @@ import store from './store'
 import api from './api'
 import echarts from 'echarts'
 import 'echarts/map/js/china'
-import { getStore} from './utils/mUtils'
+import { getStore } from './utils/mUtils'
 import Element from 'element-ui'
 import NoNetwork from './components/network/index'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -22,8 +22,10 @@ Vue.prototype.$api = api;
 Vue.config.productionTip = false;
 
 Vue.use(Element);
+
 // 挂载network断网组件
 Vue.use(NoNetwork);
+
 // 挂载指令v-permission
 Vue.use(permission);
 

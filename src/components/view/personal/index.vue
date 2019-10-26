@@ -5,7 +5,13 @@
     </div>
     <info-header :query="query"></info-header>
     <div class="info-cont">
-      <el-table :data="data" highlight-current-row default-expand-all style="width: 100%" size="mini">
+      <el-table
+        :data="data"
+        highlight-current-row
+        default-expand-all
+        style="width: 100%"
+        size="mini"
+      >
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="left" inline class="demo-table-expand">
@@ -40,9 +46,9 @@
 </template>
 
 <script>
-import InfoHeader from './module/header';
+import InfoHeader from "./module/header";
 import eFooter from "@/components/common/Footer";
-import initData from '@/mixins/initData';
+import initData from "@/mixins/initData";
 export default {
   components: {
     InfoHeader,
@@ -54,33 +60,33 @@ export default {
     return {
       sup_this: this
     };
-  },  
-  created () {
+  },
+  created() {
     // 希望所有子组件视图渲染完毕，再调用对应函数
     let _this = this;
     // 箭头函数，内部的this,默认指向Dom元素最外层this，避免指向window
     // 可以定义一个变量存储当前this
     this.$nextTick(() => {
-        _this.init();
-    })
+      _this.init();
+    });
   },
   methods: {
     // 根据混入必须复写的初始化函数
-    beforeInit () {
-        this.url = 'idol';
-        const sort = 'id,1';
-        this.params = {
-            page: this.page,
-            size: this.size,
-            sort: sort
-        };
-        const query = this.query;
-        // 根据自定义的herader组件中对应的字段名
-        const value = query.value;
-        if (value) {
-            this.params['name'] = value;
-        }
-        return true;
+    beforeInit() {
+      this.url = "idol";
+      const sort = "id,1";
+      this.params = {
+        page: this.page,
+        size: this.size,
+        sort: sort
+      };
+      const query = this.query;
+      // 根据自定义的herader组件中对应的字段名
+      const value = query.value;
+      if (value) {
+        this.params["name"] = value;
+      }
+      return true;
     }
   }
 };
