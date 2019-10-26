@@ -2,12 +2,9 @@
  * 角色信息相关接口
  */
 const express = require("express");
-
 const router = express.Router();
-
 const db = require("../models/db");
 const { cdCompare, verifyToken } = require("../util/util");
-
 let Role = db.Role;
 let Menus = db.Menus;
 let UsersRoles = db.UsersRoles;
@@ -47,7 +44,7 @@ router.get('/', verifyToken, (req, res) => {
    * limit 返回的条数
    */
   Role.find(
-    {    
+    {
       $or: [{ name: { $regex: nameReg } }]
     })
     .sort(sortTemp)

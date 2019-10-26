@@ -2,26 +2,26 @@
  * 支付相关接口
  * @type {createApplication}
  */
-//引入express模块
 const express = require("express");
 const fs = require('fs');
 const path = require('path');
 const request = require('request');
 
-//定义路由级中间件
+// 定义路由级中间件
 const router = express.Router();
 
-//引入数据模型模块
+// 引入数据模型模块
 const db = require("../models/db");
 const { verifyToken, getResponseMsg } = require("../util/util");
-
 let Alipay = db.Alipay;
 
 // JS规则引入node sdk
 const AlipaySdk = require('alipay-sdk').default;
 const AlipayFormData = require('alipay-sdk/lib/form').default;
 
-// 测试接口
+/**
+ * 测试接口
+ */
 router.get('/test', (req, res) => {
 	Alipay.find({})
 		.then(async ap => {
@@ -41,26 +41,7 @@ router.get('/test', (req, res) => {
 				camelcase: true
 			});
 
-			// 【1】：返回数据有误，待修改，看是否需要
-			// /**
-			//  * exec对应参数：method（调用的支付宝Api），params（Api 的请求参数），options（其他参数）
-			//  */
-			// alipaySdk.exec('alipay.system.oauth.token', {
-			// 	grantType: 'authorization_code',
-			// 	code: 'code',
-			// 	refreshToken: 'token'
-			// })
-			// 	.then(result => {
-			// 		// console.log(result);
-			// 		return res.json({ status: 200, info: '查询成功', content: {ap, result}});
-			// 	})
-			// 	.catch(err => {
-			// 		// ...
-			// 		return res.json({ status: -1, info: err });
-			// 	})
-
-
-			// 【2】：返回form表单（PC 支付接口）
+			// 【1】：返回form表单（PC 支付接口）
 			// const formData = new AlipayFormData();
 			// formData.addField('notifyUrl', 'http://www.com/notify');
 			// formData.addField('bizContent', {
@@ -81,7 +62,7 @@ router.get('/test', (req, res) => {
 			// console.log(result);
 
 
-			// 【3】：返回支付链接（PC 支付接口）
+			// 【2】：返回支付链接（PC 支付接口）
 			const formData = new AlipayFormData();
 			// 调用 setMethod 并传入 get，会返回可以跳转到支付页面的 url
 			formData.setMethod('get');
@@ -122,7 +103,9 @@ router.get('/test', (req, res) => {
 		})
 });
 
-// 创建支付订单、返回支付页面 -- 需要token验证（verifyToken）
+/**
+ * 创建支付订单、返回支付页面 -- 需要token验证（verifyToken）
+ */
 router.post('/', verifyToken, async (req, res) => {
 	let obj = req.body;
 	// 转换'1'为数字1
@@ -134,7 +117,7 @@ router.post('/', verifyToken, async (req, res) => {
 
 	let outTradeNo = "WWT_FRUIT_" + Date.now();
 
-	// https://www.yuque.com/chenqiu/alipay-node-sdk/config-sdk
+	// 参考 https://www.yuque.com/chenqiu/alipay-node-sdk/config-sdk
 	const alipaySdk = new AlipaySdk({
 		appId: '2016091800536139',
 		privateKey: fs.readFileSync(path.join(__dirname, '../config/alipay_key/app_private_key.pem'), 'ascii'),
@@ -153,7 +136,7 @@ router.post('/', verifyToken, async (req, res) => {
 	formData.addField('charset', 'utf-8');
 	formData.addField('signType', 'RSA');
 
-	//  https://docs.open.alipay.com/api_1/alipay.trade.page.pay/
+	// 参考 https://docs.open.alipay.com/api_1/alipay.trade.page.pay/
 	formData.addField('bizContent', {
 		outTradeNo: outTradeNo, 	// 【必选】商户订单号,64个字符以内、可包含字母、数字、下划线；需保证在商户端不重复
 		productCode: 'FAST_INSTANT_TRADE_PAY',	 // 【必选】销售产品码，与支付宝签约的产品码名称,注：目前仅支持FAST_INSTANT_TRADE_PAY
@@ -185,7 +168,9 @@ router.post('/', verifyToken, async (req, res) => {
 
 });
 
-// 查询订单支付状态
+/**
+ * 查询订单支付状态
+ */
 router.get('/:tradeNo', verifyToken, async (req, res) => {
 	let outTradeNo = req.params.tradeNo;
 	if (!outTradeNo) {
@@ -235,7 +220,9 @@ router.get('/:tradeNo', verifyToken, async (req, res) => {
 	});
 });
 
-// 查询所有数据 -- 支持模糊查询、分页
+/**
+ * 查询所有数据 -- 支持模糊查询、分页
+ */
 router.get('/', verifyToken, (req, res) => {
 	// 获取接口参数
 	let queryTemp = req.query;
@@ -273,49 +260,51 @@ router.get('/', verifyToken, (req, res) => {
 	 */
 	Alipay.find(
 		{
-		  $or: [
-			{ name: { $regex: nameReg } },
-			{ orderId: { $regex: nameReg } }
-		  ]
+			$or: [
+				{ name: { $regex: nameReg } },
+				{ orderId: { $regex: nameReg } }
+			]
 		})
 		.sort(sortTemp)
 		.skip(page * size)
 		.limit(size)
 		.then(alipays => {
-		//   console.log('========================alipayshhh=========================');
-		//   console.log(alipays);
-		  if (alipays) {
-			/**
-			 * 返回数据总数、保证模糊查询时返回对应数据的条数
-			 */
-			Alipay.find({ $or: [ {name: { $regex: nameReg }}, { orderId: { $regex: nameReg } } ] }).count()
-			  .then(co => {
-				return res.json({ status: 200, info: '查询成功', content: alipays, totalElements: co });
-			  })
-			  .catch(err => {
-				return res.json({ status: -1, info: `查询失败_2：${err.name} : ${err.message}` });
-			  });
-		  } else {
-			return res.json({ status: -1, info: `查询失败_1: ${alipays}` });
-		  }
+			//   console.log('========================alipayshhh=========================');
+			//   console.log(alipays);
+			if (alipays) {
+				/**
+				 * 返回数据总数、保证模糊查询时返回对应数据的条数
+				 */
+				Alipay.find({ $or: [{ name: { $regex: nameReg } }, { orderId: { $regex: nameReg } }] }).count()
+					.then(co => {
+						return res.json({ status: 200, info: '查询成功', content: alipays, totalElements: co });
+					})
+					.catch(err => {
+						return res.json({ status: -1, info: `查询失败_2：${err.name} : ${err.message}` });
+					});
+			} else {
+				return res.json({ status: -1, info: `查询失败_1: ${alipays}` });
+			}
 		})
 		.catch(err => {
-		  return res.json({ status: -1, info: `查询失败：${err.name} : ${err.message}` });
+			return res.json({ status: -1, info: `查询失败：${err.name} : ${err.message}` });
 		});
 });
 
-// 删除订单
+/**
+ * 删除订单
+ */
 router.delete('/:tradeNo', verifyToken, (req, res) => {
 	let tradeNo = req.params.tradeNo;
 	Alipay.findOneAndRemove({
-        orderId: tradeNo
-      })
-        .then(ap => {
-          return res.json({ status: 200, info: `订单${ap.orderId}-${ap.name}删除成功` });
-        })
-        .catch(err => {
-          return res.json({ status: -1, info: `删除订单失败：${err.name} : ${err.message}` })
-        });
+		orderId: tradeNo
+	})
+		.then(ap => {
+			return res.json({ status: 200, info: `订单${ap.orderId}-${ap.name}删除成功` });
+		})
+		.catch(err => {
+			return res.json({ status: -1, info: `删除订单失败：${err.name} : ${err.message}` })
+		});
 });
 
 

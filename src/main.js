@@ -18,8 +18,6 @@ import moment from 'moment'
 import '@/icons'  // 引入icons
 import './router/index' // 全局守卫写在此处!!
 
-// import axios from 'axios'
-// Vue.prototype.$http = axios
 Vue.prototype.$api = api;
 Vue.config.productionTip = false;
 
@@ -31,9 +29,6 @@ Vue.use(permission);
 
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$moment = moment;
-
-
-// console.log('---------main.js=================', store, getStore('menus'))
 
 // 刷新时防止菜单空白，再次获取菜单
 if (store.getters.token && getStore('menus')) {

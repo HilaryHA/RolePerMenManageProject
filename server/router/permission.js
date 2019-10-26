@@ -3,12 +3,9 @@
  */
 
 const express = require("express");
-
 const router = express.Router();
-
 const db = require("../models/db");
 const { getMenuMaxId, childrenObj, deleteChildren, getAllPerName, verifyToken } = require("../util/util");
-
 let Permission = db.Permission;
 
 /**

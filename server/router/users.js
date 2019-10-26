@@ -2,16 +2,14 @@
  * 用户信息相关接口
  * @type {createApplication}
  */
-//引入express模块
+// 引入express模块
 const express = require("express");
-
-//定义路由级中间件
+// 定义路由级中间件
 const router = express.Router();
-
-//引入数据模型模块
+// 引入数据库模块
 const db = require("../models/db");
 const { cdCompare, generateToken, verifyToken, userEncrypt, userDecrypt, noRepeatObj } = require("../util/util");
-
+// 获取需要的数据表模型
 let Users = db.Users;
 let Menus = db.Menus;
 let UsersRoles = db.UsersRoles;
@@ -74,7 +72,7 @@ router.get("/", verifyToken, (req, res) => {
         /**
          * 返回数据总数、保证模糊查询时返回对应数据的条数
          */
-        Users.find({ $or: [ {name: { $regex: nameReg }} ] }).count()
+        Users.find({ $or: [{ name: { $regex: nameReg } }] }).count()
           .then(co => {
             return res.json({ status: 200, info: '查询成功', content: user, totalElements: co });
           })
@@ -90,14 +88,18 @@ router.get("/", verifyToken, (req, res) => {
     });
 });
 
-// 退出登录
+/**
+ * 退出登录
+ */
 router.get('/logout', verifyToken, (req, res) => {
 
 })
 
-// 通过ObjectId查询单个用户信息路由
+/**
+ * 查询单个用户信息路由
+ * 请求接口例如：localhost:8080/13
+ */
 router.get("/:id", verifyToken, (req, res) => {
-  // 接口对应的参数是localhost:8080/13
   // 【注意】转换为数字id,因为定义模型时，类型写的Number
   let id = +req.params.id;
   /**
@@ -145,7 +147,9 @@ router.get("/:id", verifyToken, (req, res) => {
 
 })
 
-// 用户登录
+/**
+ * 用户登录
+ */
 router.post('/login', (req, res) => {
   // 获取用户信息 -- 传值时qs.stringify序列化过 -- postman测试能获取到，但浏览器获取的url的'?'后没有参数
   // let myUser = qs.parse(req.url.split('?')[1]);
@@ -158,15 +162,15 @@ router.post('/login', (req, res) => {
   if (!pass || pass == '') {
     return res.json({ status: -1, info: '密码不能为空' });
   }
-  /* mongoose模块查询一条数据方法 */
+  // mongoose模块查询一条数据方法
   Users.findOne({ name: name })
     .then(user => {
       if (!user) {
-        /* 注意return */
+        // 注意return
         return res.json({ status: -1, info: '用户名错误' });
       } else if (user) {
         let dbPass = userDecrypt(user.password);
-        /* 解密后的密码 与 用户输入密码进行比较 */
+        // 解密后的密码 与 用户输入密码进行比较
         if (dbPass !== pass) {
           return res.json({ status: -1, info: '密码错误' });
         } else {
@@ -184,6 +188,165 @@ router.post('/login', (req, res) => {
     })
     .catch(err => {
       return res.json({ status: -1, info: `登录失败${err}` });
+    })
+});
+
+/**
+ * 添加一个用户信息路由
+ */
+router.post("/", verifyToken, (req, res) => {
+  //使用Hero model上的create方法储存数据
+  let roles = req.body.roles;
+  let userObj = { ...req.body };
+  // 存储到user表时，删除对应的role的id
+  delete userObj['roles'];
+  if (!userObj.name) {
+    return res.json({ status: -1, info: `用户名不能为空` });
+  }
+  if (!userObj.password) {
+    return res.json({ status: -1, info: `密码不能为空` });
+  }
+  // 加密用户的密码
+  userObj.password = userEncrypt(userObj.password);
+  !userObj.alias && (userObj.alias = userObj.name);
+  // 添加id，根据id进行倒序排序，获取一条数据，即当前最大id值数据
+  Users.find({}).sort({ id: -1 }).limit(1)
+    .then((allUser) => {
+      let maxUserId = allUser[0].id;
+      // 避免出现null
+      maxUserId = ~~maxUserId;
+      // 设置最大id值
+      userObj.id = maxUserId + 1;
+      Users.create(userObj, (err, hero) => {
+        if (err) {
+          return res.json({ status: -1, info: `创建用户失败：${err.name} : ${err.message}` });
+        } else {
+          if (roles.length == 0) {
+            return res.json({
+              status: 200,
+              info: '创建成功',
+              data: hero
+            })
+          } else {
+            // 添加到user_roles表中
+            let arr = [];
+            roles.map(item => {
+              let obj = {};
+              obj.user_id = hero.id;
+              obj.role_id = item;
+              arr.push(obj);
+            })
+            // 一次性加入多条数据
+            UsersRoles.create(arr)
+              .then(userRo => {
+                return res.json({
+                  status: 200,
+                  info: '创建成功',
+                  data: userRo
+                })
+              })
+              .catch(err => {
+                return res.json({ status: -1, info: `添加用户权限失败：${err.name} : ${err.message}` });
+              })
+          }
+        }
+      });
+    })
+    .catch(err => {
+      return res.json({ status: -1, info: `查询用户失败：${err.name} : ${err.message}` });
+    })
+});
+
+/**
+ * 更新一条用户信息数据路由
+ */
+router.put("/:id", verifyToken, (req, res) => {
+  let userObj = req.body;
+  let userId = req.params.id;
+  if (!userObj.name) {
+    return res.json({ status: -1, info: `用户名不能为空` });
+  }
+  !userObj.alias && (userObj.alias = userObj.name);
+  let setObj = {
+    name: userObj.name,
+    alias: userObj.alias,
+    update_time: new Date()
+  };
+  if (userObj.password) {
+    // 加密用户的密码
+    userObj.password = userEncrypt(userObj.password);
+    setObj.password = userObj.password;
+  }
+  Users.findOneAndUpdate(
+    { id: userId },
+    {
+      $set: setObj
+    },
+    // new: true，表示返回最新的数据，可以查找后面的内容
+    {
+      new: true
+    }
+  )
+    .then(user => {
+      // 修改时，删除之前的权限，再添加对应的权限
+      let roles = userObj.roles;
+      UsersRoles.deleteMany({ user_id: userId })
+        .then(ur => {
+          // 添加到user_roles表中
+          let arr = [];
+          roles.map(item => {
+            let obj = {};
+            obj.user_id = userId;
+            obj.role_id = item;
+            arr.push(obj);
+          })
+          // 一次性加入多条数据
+          UsersRoles.create(arr)
+            .then(userRo => {
+              return res.json({
+                status: 200,
+                info: '更新成功',
+                data: userRo
+              })
+            })
+            .catch(err => {
+              return res.json({ status: -1, info: `添加用户权限失败：${err.name} : ${err.message}` });
+            })
+        })
+        .catch(err => {
+          return res.json({ status: -1, info: `删除用户角色失败：${err.name} : ${err.message}` })
+        })
+      // return res.json({
+      //   status: 200,
+      //   info: '更新成功',
+      //   data: user
+      // })
+    })
+    .catch(err => {
+      return res.json({ status: -1, info: `更新用户失败：${err.name} : ${err.message}` })
+    });
+});
+
+/**
+ * 删除一条用户信息数据路由
+ */
+router.delete("/:id", verifyToken, (req, res) => {
+  // 先删除users_roles表信息，再删除user表信息
+  let userId = req.params.id;
+  UsersRoles.deleteMany({ user_id: userId })
+    .then(ur => {
+      Users.findOneAndRemove({
+        id: userId
+      })
+        .then(user => {
+          return res.json({ status: 200, info: `${user.name}删除成功` });
+        })
+        .catch(err => {
+          return res.json({ status: -1, info: `删除用户失败：${err.name} : ${err.message}` })
+        });
+    })
+    .catch(err => {
+      return res.json({ status: -1, info: `删除用户权限失败：${err.name} : ${err.message}` })
     })
 });
 
@@ -250,7 +413,7 @@ const getSignData = function (res, supData, user) {
   // tid = 3; // ...
   /**
    * 【创建菜单临时表】
-   * 参考https://docs.mongodb.com/manual/reference/operator/aggregation/unwind/
+   * 参考 https://docs.mongodb.com/manual/reference/operator/aggregation/unwind/
    * "$unwind" 如将本是一条含children数组(包含三个元素)的数据，就返回以children为字段名，children的数据被元素替换的三条数据
    * "$group" 需要以"_id"进行分组
    * "$push" 将"children"字段下的数据，作为元素添加到menu数组中
@@ -404,7 +567,7 @@ const getCorrespondData = function (supData, subDa) {
     }
     return sp;
   })
-  if(menus.length) {
+  if (menus.length) {
     /* 通过id值进行排序 */
     menus = menus.sort(cdCompare("id"));
     /* 去重children数组 */
@@ -424,7 +587,7 @@ const getCorrespondData = function (supData, subDa) {
       o.children = [];
     }
   });
-  if(permissions.length) {
+  if (permissions.length) {
     /* 通过id值进行排序 */
     permissions = permissions.sort(cdCompare("id"));
     /* 去重权限数组 */
@@ -434,159 +597,5 @@ const getCorrespondData = function (supData, subDa) {
   temp.push(menus, permissions);
   return temp;
 };
-
-// 添加一个用户信息路由
-router.post("/", verifyToken, (req, res) => {
-  //使用Hero model上的create方法储存数据
-  let roles = req.body.roles;
-  let userObj = { ...req.body };
-  // 存储到user表时，删除对应的role的id
-  delete userObj['roles'];
-  if (!userObj.name) {
-    return res.json({ status: -1, info: `用户名不能为空` });
-  }
-  if (!userObj.password) {
-    return res.json({ status: -1, info: `密码不能为空` });
-  }
-  // 加密用户的密码
-  userObj.password = userEncrypt(userObj.password);
-  !userObj.alias && (userObj.alias = userObj.name);
-  // 添加id，根据id进行倒序排序，获取一条数据，即当前最大id值数据
-  Users.find({}).sort({ id: -1 }).limit(1)
-    .then((allUser) => {
-      let maxUserId = allUser[0].id;
-      // 避免出现null
-      maxUserId = ~~maxUserId;
-      // 设置最大id值
-      userObj.id = maxUserId + 1;
-      Users.create(userObj, (err, hero) => {
-        if (err) {
-          return res.json({ status: -1, info: `创建用户失败：${err.name} : ${err.message}` });
-        } else {
-          if (roles.length == 0) {
-            return res.json({
-              status: 200,
-              info: '创建成功',
-              data: hero
-            })
-          } else {
-            // 添加到user_roles表中
-            let arr = [];
-            roles.map(item => {
-              let obj = {};
-              obj.user_id = hero.id;
-              obj.role_id = item;
-              arr.push(obj);
-            })
-            // 一次性加入多条数据
-            UsersRoles.create(arr)
-              .then(userRo => {
-                return res.json({
-                  status: 200,
-                  info: '创建成功',
-                  data: userRo
-                })
-              })
-              .catch(err => {
-                return res.json({ status: -1, info: `添加用户权限失败：${err.name} : ${err.message}` });
-              })
-          }
-        }
-      });
-    })
-    .catch(err => {
-      return res.json({ status: -1, info: `查询用户失败：${err.name} : ${err.message}` });
-    })
-});
-
-//更新一条用户信息数据路由
-router.put("/:id", verifyToken, (req, res) => {
-  let userObj = req.body;
-  let userId = req.params.id;
-  if (!userObj.name) {
-    return res.json({ status: -1, info: `用户名不能为空` });
-  }
-  !userObj.alias && (userObj.alias = userObj.name);
-  let setObj = {
-    name: userObj.name,
-    alias: userObj.alias,
-    update_time: new Date()
-  };
-  if (userObj.password) {
-    // 加密用户的密码
-    userObj.password = userEncrypt(userObj.password);
-    setObj.password = userObj.password;
-  }
-  Users.findOneAndUpdate(
-    { id: userId },
-    {
-      $set: setObj
-    },
-    // new: true，表示返回最新的数据，可以查找后面的内容
-    {
-      new: true
-    }
-  )
-    .then(user => {
-      // 修改时，删除之前的权限，再添加对应的权限
-      let roles = userObj.roles;
-      UsersRoles.deleteMany({ user_id: userId })
-        .then(ur => {
-          // 添加到user_roles表中
-          let arr = [];
-          roles.map(item => {
-            let obj = {};
-            obj.user_id = userId;
-            obj.role_id = item;
-            arr.push(obj);
-          })
-          // 一次性加入多条数据
-          UsersRoles.create(arr)
-            .then(userRo => {
-              return res.json({
-                status: 200,
-                info: '更新成功',
-                data: userRo
-              })
-            })
-            .catch(err => {
-              return res.json({ status: -1, info: `添加用户权限失败：${err.name} : ${err.message}` });
-            })
-        })
-        .catch(err => {
-          return res.json({ status: -1, info: `删除用户角色失败：${err.name} : ${err.message}` })
-        })
-      // return res.json({
-      //   status: 200,
-      //   info: '更新成功',
-      //   data: user
-      // })
-    })
-    .catch(err => {
-      return res.json({ status: -1, info: `更新用户失败：${err.name} : ${err.message}` })
-    });
-});
-
-//删除一条用户信息数据路由
-router.delete("/:id", verifyToken, (req, res) => {
-  // 先删除users_roles表信息，再删除user表信息
-  let userId = req.params.id;
-  UsersRoles.deleteMany({ user_id: userId })
-    .then(ur => {
-      Users.findOneAndRemove({
-        id: userId
-      })
-        .then(user => {
-          return res.json({ status: 200, info: `${user.name}删除成功` });
-        })
-        .catch(err => {
-          return res.json({ status: -1, info: `删除用户失败：${err.name} : ${err.message}` })
-        });
-    })
-    .catch(err => {
-      return res.json({ status: -1, info: `删除用户权限失败：${err.name} : ${err.message}` })
-    })
-});
-
 
 module.exports = router; // 注意是exports

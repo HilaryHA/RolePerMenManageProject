@@ -65,7 +65,10 @@
 
 <script>
 import { doPay, queryPay } from '@/api/otherApi/payment';
+import initPerm from "@/mixins/initPerm";
 export default {
+  // 混入，分发复用功能（是否有权限打开此页面）
+  mixins: [initPerm],
   data() {
     return {
       stepActive: 0,
@@ -82,7 +85,8 @@ export default {
         name: [
           { required: true, message: '请输入订单名称', trigger: 'blur' }
         ]
-      }
+      },
+      checkPermArr: ['ADMIN', 'PAY_CREATE']
     };
   },
   created() {
@@ -93,13 +97,13 @@ export default {
       this.$refs[refName].validate(async (valid) => {
         // 【注意】 标签属性prop的字段名和v-model的属性名一致
         if (valid) {
-          // this.stepActive++;
           let tempDa = await doPay(this.form);
           if (tempDa.data.status == 200) {
             window.open(tempDa.data.data);
           }
+          // this.stepActive++;
         } else {
-          console.log('error submit!!');
+          // console.log('error submit!!');
           return false;
         }
       });      

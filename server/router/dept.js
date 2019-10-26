@@ -3,27 +3,24 @@
  * @type {createApplication}
  */
 const express = require('express');
-
 const router = express.Router();
-
 const db = require('../models/db');
-const {verifyToken} = require('../util/util')
-
+const { verifyToken } = require('../util/util');
 let Dept = db.Dept;
 
 /**
  * 获取部门数据 -- 1表示升序，-1表示降序, verifyToken表示需要token
  */
-router.get('/', verifyToken, (req, res) => {  
+router.get('/', verifyToken, (req, res) => {
   // 根据条件获取部门数据
   let findCondition = {};
   let queryTemp = req.query;  //dept?name='部'&enabled=true
   let isQuery = Object.keys(queryTemp); // 判断是否为空对象
   let sortTemp = {};  // {pid: 1}
-  let size = 10, page=0;
+  let size = 10, page = 0;
   if (isQuery.length > 0) {
     // ES6赋值给新对象，但不影响原对象的值
-    findCondition = {...queryTemp};
+    findCondition = { ...queryTemp };
     for (let i in findCondition) {
       if (findCondition[i] == `true`) {
         findCondition[i] = true;
@@ -35,13 +32,13 @@ router.get('/', verifyToken, (req, res) => {
     if (findCondition.sort) {
       let tmp = findCondition.sort.split(',');
       // 字符串转换为数字'1' ---> 1
-      tmp[1] = +tmp[1]; 
+      tmp[1] = +tmp[1];
       sortTemp[tmp[0]] = tmp[1];
     }
     // 查询条数
     if (findCondition.size) {
       // 字符串转换为数字
-      size = findCondition.size * 1; 
+      size = findCondition.size * 1;
     }
     // 当前页数
     if (queryTemp.page) {
@@ -50,7 +47,7 @@ router.get('/', verifyToken, (req, res) => {
   }
   // 搜索条件
   const nameReg = new RegExp(findCondition.name, 'i'); // 不区分大小写
-  const whereEnabled = (findCondition.enabled == false || findCondition.enabled == true) ? {enabled: findCondition.enabled} : {};  
+  const whereEnabled = (findCondition.enabled == false || findCondition.enabled == true) ? { enabled: findCondition.enabled } : {};
   /**
    * $or 多条件模糊查询，选择一个模糊查询，数组
    * where 类似sql的where，参数为对象
@@ -60,24 +57,24 @@ router.get('/', verifyToken, (req, res) => {
    */
   Dept.find({
     $or: [
-      { name: {$regex: nameReg} }
+      { name: { $regex: nameReg } }
     ]
   })
-  .where(whereEnabled)  
-  .sort(sortTemp)
-  .skip(page * size)
-  .limit(size)
-    .then( dept => {
+    .where(whereEnabled)
+    .sort(sortTemp)
+    .skip(page * size)
+    .limit(size)
+    .then(dept => {
       let temp = getDeptList(dept);
       let data = deleteChildren(temp);
 
-      Dept.find({ $or: [{ name: {$regex: nameReg} }] }).where(whereEnabled).count()
-      .then(count => {
-        return res.json({ status: 200, info: '获取成功', totalElements: count, content: data });
-      })
-      .catch(err => {
-        return res.json({ status: -1, info: `部门数据计数：${err.name} : ${err.message}` });
-      })
+      Dept.find({ $or: [{ name: { $regex: nameReg } }] }).where(whereEnabled).count()
+        .then(count => {
+          return res.json({ status: 200, info: '获取成功', totalElements: count, content: data });
+        })
+        .catch(err => {
+          return res.json({ status: -1, info: `部门数据计数：${err.name} : ${err.message}` });
+        })
 
       // Dept.find({}).estimatedDocumentCount() // 计数，此方法不能条件查询，另一方法countDocuments
       //   .then(count => {
@@ -88,7 +85,7 @@ router.get('/', verifyToken, (req, res) => {
       //   })
 
     })
-    .catch( err => {
+    .catch(err => {
       return res.json({ status: -1, info: `获取部门数据：${err.name} : ${err.message}` });
     })
 });
@@ -109,25 +106,25 @@ router.post('/', verifyToken, (req, res) => {
     params.pid = ~~(params.pid);
   }
   Dept.find({}).sort({ id: -1 }).limit(1)   // 根据id进行倒序排序，查找一条
-  .then(maxDept => {
-    let tmpId = maxDept[0].id + 1;  // 最大id值加一
-    params.id = tmpId;
-    params['label'] = params.name;
-    // params['create_time'] = new Date();  // db.js中有默认值
-    // params['children'] = undefined; // 去除多余字段
-    // params ['__v'] = undefined;
-    console.log('=--------------->', params);
-    Dept.create(params)
-      .then(dept => {
-        return res.json({ status: 200, info: '创建成功', content: dept });
-      })
-      .catch(err => {
-        return res.json({ status: -1, info: `创建部门数据：${err.name} : ${err.message}` });
-      })
-  })
-  .catch(err => {
-    return res.json({ status: -1, info: `查询部门数据maxId：${err.name} : ${err.message}` });
-  });
+    .then(maxDept => {
+      let tmpId = maxDept[0].id + 1;  // 最大id值加一
+      params.id = tmpId;
+      params['label'] = params.name;
+      // params['create_time'] = new Date();  // db.js中有默认值
+      // params['children'] = undefined; // 去除多余字段
+      // params ['__v'] = undefined;
+      console.log('=--------------->', params);
+      Dept.create(params)
+        .then(dept => {
+          return res.json({ status: 200, info: '创建成功', content: dept });
+        })
+        .catch(err => {
+          return res.json({ status: -1, info: `创建部门数据：${err.name} : ${err.message}` });
+        })
+    })
+    .catch(err => {
+      return res.json({ status: -1, info: `查询部门数据maxId：${err.name} : ${err.message}` });
+    });
 })
 
 /**
@@ -155,19 +152,18 @@ router.put('/:id', verifyToken, (req, res) => {
   let updateDept = req.body;
   updateDept.label = updateDept.name;
   updateDept.update_time = new Date();
-  Dept.updateOne({id: req.params.id}, updateDept)
+  Dept.updateOne({ id: req.params.id }, updateDept)
     .then(updateDept => {
       if (1 == updateDept.n) {
         return res.json({ status: 200, info: '更新成功' });
       } else {
-        return res.json({status: 200, info: '更新部门数据有误', data: updateDept});
+        return res.json({ status: 200, info: '更新部门数据有误', data: updateDept });
       }
     })
     .catch(err => {
       return res.json({ status: -1, info: `更新部门数据失败：${err.name} : ${err.message}` });
     })
 })
-
 
 /**
  * 获取含children的部门
@@ -177,14 +173,14 @@ router.put('/:id', verifyToken, (req, res) => {
  * @param tmp
  * @returns {Array}
  */
-const getDeptList = function (data, tmp=[]) {
+const getDeptList = function (data, tmp = []) {
   data.forEach(deptItem => {
-    if(tmp.length == 0) {
+    if (tmp.length == 0) {
       tmp.push(deptItem);
     } else {
       tmp.forEach((da, index) => {
         if (da.id == deptItem.pid) {
-          if(da.children == undefined) {
+          if (da.children == undefined) {
             da.children = [];
           }
           da.children.push(deptItem);
@@ -193,22 +189,22 @@ const getDeptList = function (data, tmp=[]) {
             // Array.from(new Set(da.children)); // 去除简单类型数组重复元素，如[1, 3, 3, 4, 2]
             // 去除引用类型数组重复元素
             let hashTmp = {};
-            da.children = da.children.reduce(function(init, item){
+            da.children = da.children.reduce(function (init, item) {
               // init初始值[]，item当前元素
-              hashTmp[item.id] ?  '' : hashTmp[item.id]=true && init.push(item);
+              hashTmp[item.id] ? '' : hashTmp[item.id] = true && init.push(item);
               return init;
             }, []); // reduce(回调函数，初始值)
           }
         } else if (da.pid == deptItem.pid && da.id != deptItem.id) {
           // 模糊查询时，第一个元素可能不为父元素, 当前元素都同级时
           // 当为不同级模糊查询时有问题
-          let tmpIfExit = tmp.every(item => item.id!=deptItem.id);
+          let tmpIfExit = tmp.every(item => item.id != deptItem.id);
           if (tmpIfExit) {
             tmp.push(deptItem);
           }
         }
         else if (da.children && da.children.length > 0) {
-          getDeptList(data ,da.children)
+          getDeptList(data, da.children)
         }
       })
     }
@@ -232,9 +228,8 @@ const deleteChildren = function (dept) {
       return item;
     })
   } else {
-   return null;
+    return null;
   }
 }
-
 
 module.exports = router;

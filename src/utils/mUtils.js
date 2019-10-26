@@ -39,6 +39,7 @@ export const removeStore = name => {
  * @param {type} 类型
  *   type == 1 ---> "yyyy-mm-dd hh:MM:ss.fff"
  *   type == 2 ---> "yyyymmddhhMMss"
+ *   type == 3 ---> "yyyy-mm-dd"
  *   type == '' ---> "yyyy-mm-dd hh:MM:ss"
  */
 export const formatDate = (time, type) =>{

@@ -43,8 +43,11 @@ const mutations = {
     [types.SET_USER]: (state, user) => {
       state.user = user;
     },
-    [types.LOGIN_IN]: (state) => {
-      state.loginSuccess = true;
+    [types.LOGIN_IN]: (state, data) => {
+      state.user = data.userInfo;
+      state.roles = data.menuAndPerm[1];
+      state.token = data.userInfo.token;
+      
     },
     [types.LOGIN_OUT]: (state) => {
       state.loginSuccess = false;
@@ -69,13 +72,16 @@ const actions = {
     changeNetwork: ({ commit }, netStatus) => {
       commit(types.CHANGE_NETWORK, netStatus);
     },
+    setUser: ({ commit }, user ) => {
+      commit(types.SET_USER, user);
+    },
     setRoles: ({ commit }, data ) => {
       setRoleInfo(data, commit);
     },
-    loginIn: ( { dispatch, commit } ) => {
+    loginIn: ( { commit }, data ) => {
       // console.log('----------------->',dispatch);
 
-      // commit(types.LOGIN_IN);
+      commit(types.LOGIN_IN, data);
       // // commit(types.USER_TOKEN, token);
       // dispatch('userToken'); // 调用了吗？
       // dispatch('Menu/addMenu', {},  {root: true}); // 调用菜单模块中的方法

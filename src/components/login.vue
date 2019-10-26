@@ -62,7 +62,7 @@ export default {
         ...mapGetters(['menus', 'roles'])
     },
     methods: {
-        ...mapActions(['addMenu', 'loginSuccess', 'userToken', 'setRoles']),
+        ...mapActions(['addMenu', 'loginSuccess', 'userToken', 'setRoles', 'setUser', 'loginIn']),
         submitForm(formName) {
             let _this = this;
             _this.$refs[formName].validate(async (valid) => {
@@ -70,12 +70,17 @@ export default {
                 let user = await _this.$api.userInfo.login(_this.form);
                 if ( user.data.status == 200 ) {
                     let tempData = user.data.data;
-                    // 存储登录信息---token
-                    _this.userToken(tempData.userInfo.token);
-                    // 存储登录权限
-                    _this.setRoles(tempData.menuAndPerm[1]);
-                    // let role = await _this.$api.getAllPerName();
-                    // console.log('----------role========', _this.roles);
+                    // // 存储登录信息---token
+                    // _this.userToken(tempData.userInfo.token);
+                    // // 存储登录权限
+                    // _this.setRoles(tempData.menuAndPerm[1]);
+                    // // 存储用户信息
+                    // _this.setUser(tempData.userInfo);
+
+                    // 存储用户信息
+                    _this.loginIn(tempData);
+
+
                   // 存储到本地菜单 【问题】因为是异步获取菜单，所有登录之后菜单还没存储到localStorage中
                   // 【思路】在Promise的then()回调函数中执行跳转。。。。。。。。。。不行哎
                   // 【方法】在异步addMenu函数中添加一个参数，即登录后获取的菜单数据，可能是moogose查询数据库很慢，所以尽量减少请求接口次数                  
@@ -90,8 +95,7 @@ export default {
                     _this.loginSuccess(true);
                     // 增加菜单
                     _this.addMenu(menuList);
-                    _this.$router.push(menuList[0].redirect ? menuList[0].redirect : menuList[0].children[0].path);                    
-                    // _this.$router.push('/my');                    
+                    _this.$router.push(menuList[0].redirect ? menuList[0].redirect : menuList[0].children[0].path);                  
                   } else {
                     this.$notify({
                       title: '警告',

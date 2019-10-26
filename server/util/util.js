@@ -25,7 +25,7 @@ const getMenuMaxId = function (data) {
 }
 
 /**
- * 获取数组最大值
+ * 【获取数组最大值】
  * @param data
  */
 const getMaxId = function (data) {
@@ -33,7 +33,7 @@ const getMaxId = function (data) {
 };
 
 /**
- * 将所有children中的元素组成新的数组
+ * 【将所有children中的元素组成新的数组】
  * 此处 Array.from函数写着玩的（作用：将其他类型数据转换为数组）
  * @param data
  * @param arr
@@ -119,9 +119,9 @@ const deleteChildren = function (dept) {
 }
 
 /**
- * 将对象转换为mongodb修改时需要的格式
+ * 【将对象转换为mongodb修改时需要的格式】
  * @param data
- * @returns {{}}
+ * @returns {Object}
  */
 const childrenObj = function (data) {
   let obj = {};
@@ -134,7 +134,7 @@ const childrenObj = function (data) {
 }
 
 /**
- * 获取所有权限name
+ * 【获取所有权限name】
  * @param data
  */
 const getAllPerName = function (data, arr = []) {
@@ -148,9 +148,10 @@ const getAllPerName = function (data, arr = []) {
 }
 
 /**
- * 根据数组对象某属性进行比较
+ * 【根据数组对象某属性进行比较】
  * such as: children.sort(cdCompare("id"))
- * @param {*} prop
+ * @param {String} prop
+ * @return 根据prop属性排序后的数组
  */
 const cdCompare = function(prop) {
   return function (obj1, obj2) {
@@ -161,8 +162,8 @@ const cdCompare = function(prop) {
 }
 
 /**
- * 生成token方法
- * @param {*} data
+ * 【生成token方法】
+ * @param {Object} data
  * @returns {*} token
  */
 const generateToken = function (data) {
@@ -170,22 +171,25 @@ const generateToken = function (data) {
   let cert = fs.readFileSync(path.join(__dirname, '../config/private.pem')); // 私钥
   let token = jwt.sign({
     data,
+    // 期限为3小时
     exp: created + 3600 * 3
-  }, cert); // 期限为3小时
+  }, cert);
   return token;
 }
 
 /**
- * 验证token是否过期
- * @param {*} token 
+ * 【验证token是否过期】
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
  */
 const verifyToken = function (req, res, next) {
   let token = req.headers['authorization']; // 获取请求头的token值
   let cert = fs.readFileSync(path.join(__dirname, '../config/public.pem')); // 公钥
   try {
-    if (!token) { return res.json({ status: 401, info: 'No token provided.' }); }
-    // return res.status(401).send({ auth: false, message: 'No token provided.' });
-
+    if (!token) { 
+      return res.json({ status: 401, info: 'No token provided.' }); 
+    }
     token = token.split('"')[1]; // 去掉双引号
     let result = jwt.verify(token, cert) || {};
     let {exp = 0} = result, current = Math.floor(Date.now() / 1000);
@@ -208,8 +212,9 @@ const verifyToken = function (req, res, next) {
 }
 
 /**
- * 用户注册加密
- * @param {*} password 原始密码
+ * 【用户注册加密】
+ * @param {String} password 原始密码
+ * @return {String} 16进制的加密密码
  */
 const userEncrypt = function (password) {
   // 方法1`
@@ -236,7 +241,7 @@ const userEncrypt = function (password) {
   
   // 方法3`
   let prvKey = fs.readFileSync(path.join(__dirname, '../config/rsa-prv.pem'), 'utf8');
-  // pass = 'This is my password'
+  // password = 'This is my password'
   let enc_by_prv = crypto.privateEncrypt(prvKey, Buffer.from(password, 'utf8'));
   // 转换成16进制字符串
   // console.log('encrypted by private key: ' + enc_by_prv.toString('hex'));
@@ -244,12 +249,13 @@ const userEncrypt = function (password) {
 }
 
  /**
-  * 用户注册解密
-  * @param {*} encrPass 加密后的密码
+  * 【用户注册解密】
+  * @param {String} encrPass 加密密码
+  * @return {String} 解密后的密码
   */
 const userDecrypt = function (enc_by_prv) {
   // 转换为Buffer对象
-  enc_by_prv = Buffer.from(enc_by_prv, 'hex')
+  enc_by_prv = Buffer.from(enc_by_prv, 'hex');
   // console.log('enc_by_prv-----------------: ' , enc_by_prv);
   let pubKey = fs.readFileSync(path.join(__dirname, '../config/rsa-pub.pem'), 'utf8');
   let dec_by_pub = crypto.publicDecrypt(pubKey, enc_by_prv);
@@ -258,7 +264,7 @@ const userDecrypt = function (enc_by_prv) {
 }
 
 /**
- * 支付宝统一收单线下交易查询
+ * 【支付宝统一收单线下交易查询提示】
  * @param {Object} queryObj {'alipay_trade_query_response': {...}, 'sign': 'xxx'}
  * @returns {String} msg API公告返回码对应的描述
  */
@@ -297,17 +303,19 @@ const getResponseMsg = function (queryObj) {
 }
 
 /**
- * 数组去重[基本类型元素]
+ * 【数组去重<基本类型元素>】
  * @param {Array} arr 
+ * @return {Array} 去重后的数组
  */
 const noRepeat = function(arr) {
   return [...new Set(arr)];
 }
 
 /**
- * 数组去重[引用类型元素]
+ * 【数组去重<引用类型元素>】
  * @param {Array} arr 数组
  * @param {String} typeName 属性名（唯一性）
+ * @return {Array} 去重后的数组
  */
 const noRepeatObj = function (arr, typeName) {
   let hashTmp = {};
@@ -320,8 +328,8 @@ const noRepeatObj = function (arr, typeName) {
 }
 
 /**
- * 创建文件夹
- * @param {*} folder 文件夹名
+ * 【创建文件夹】
+ * @param {String} folder 文件夹名（相对路径）
  */
 const createFolder = function(folder) {
   try {
@@ -332,8 +340,9 @@ const createFolder = function(folder) {
 }
 
 /**
- * 是否存在文件
- * @param {*} fileName 文件名
+ * 【判断是否存在文件】
+ * @param {String} fileName 文件名（相对路径）
+ * @return {Boolean}
  */
 const isPresenceFile = async function(fileName) {
   let falg = false;
@@ -349,9 +358,10 @@ const isPresenceFile = async function(fileName) {
 }
 
 
-
-// mongodb+node.js中导出需要使用module.exports
-// 区别于 ES6使用export导出
+/**
+ * mongodb+node.js中导出需要使用module.exports
+ * 区别于 ES6使用export导出
+ */
 module.exports = {
   getMenuMaxId,
   getDeptList,

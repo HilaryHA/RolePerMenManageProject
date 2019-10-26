@@ -1,5 +1,7 @@
 /**
  * 日志存储
+ * @author Hilary
+ * @data 2019/10/08
  */
 var log4js = require('log4js');
 
@@ -20,7 +22,7 @@ log4js.configure({
       type: 'file',
       filename: 'logs/wwt-things.log',
       maxLogSize: 10 * 1024 * 1024, // = 10Mb
-      backups: 5, // keep five backup files
+      backups: 5,     // keep five backup files
       compress: true, // compress the backups
       encoding: 'utf-8',
       mode: 0o0640, // ?
@@ -45,6 +47,9 @@ log4js.configure({
   // replaceConsole: true // 替换 console.log
 })
 
+/**
+ * 日志打印函数，代替console
+ */
 exports.logger = function (name, level) {
   var logger = log4js.getLogger(name);
   //默认为debug权限及以上
@@ -52,6 +57,9 @@ exports.logger = function (name, level) {
   return logger;
 };
 
+/**
+ * 日志文件生成函数
+ */
 exports.use = function (app, level) {
   //加载中间件
   app.use(log4js.connectLogger(log4js.getLogger('【logInfo】'), {

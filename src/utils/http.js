@@ -21,11 +21,9 @@ const tip = msg => {
 
 /**
  *  跳转登录页
- *  携带当前登录页路由，以便在登录页面完成登录后返回当前页面
+ *  携带当前登录页路由，以便在登录成功后返回当前页面
  */
 const toLogin = () => {
-    // console.log(router)
-    // console.log(router.history.current.path)
     if (router.history.current.path.includes('/')) {
         router.replace({ path: '/' });
     } else {
@@ -43,20 +41,24 @@ const toLogin = () => {
  *  @param {Number} status 请求失败的状态码
  */
 const errorHandle = (status, other) => {
-//   console.log(status , other)
     // 状态码判断
     switch(status) {
         // 200: 后台返回错误信息
-        case 200:
-           if (other.includes('expired')) {
+        case 200:        
+           if (other.info.includes('expired')) {
+               // TokenExpiredError: jwt expired
                tip('登录超时，请重新登录');
                toLogin();
+           } else if (other.status == 401 || other.status == 403) {
+               tip(`${other.status} : ${other.info}`);
+               toLogin();
            } else {
-               tip(other);
+               tip(other.info);
            }
            break;
         // 401: 未登录状态，跳转登录页
         case 401:
+            tip('未登录，请重新登录');
             toLogin();
             break;
         // 403：token过期
@@ -74,7 +76,9 @@ const errorHandle = (status, other) => {
             break;
         //----------其他状态码
         default:
+            tip(other);
             console.log(status, other);
+            break;
     }
 }
 
@@ -129,8 +133,11 @@ instance.interceptors.response.use(
     // 请求成功
     res => {
       if(res.status === 200) {
-        if ( res.data.status == -1 ) {
-          errorHandle(res.status, res.data.info);
+        // if ( res.data.status == -1 ) {
+        //   errorHandle(res.status, res.data.info);
+        // }
+        if (res.data.status == -1 || res.data.status == 401 || res.data.status == 403) {
+            errorHandle(res.status, res.data);
         }
         Promise.resolve(res);
       } else {

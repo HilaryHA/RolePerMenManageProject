@@ -4,19 +4,18 @@
  */
 
 const express = require('express');
-
-//定义路由级中间件
 const router = express.Router();
-
-//引入数据模型模块
 const db = require('../models/db');
 const { verifyToken } = require("../util/util");
-
 let Idol = db.Idol;
 
-// 查询所有信息 -- 支持模糊查询、分页 -- 需要token验证(verifyToken)
+/**
+ * 查询所有信息
+ * 支持模糊查询、分页
+ * 需要token验证(verifyToken)
+ */
 router.get('/', verifyToken, (req, res) => {
-    // 获取接口参数
+	// 获取接口参数
 	let queryTemp = req.query;
 	// 初始化排序变量
 	let sortTemp = {}, size = 10, page = 0;
@@ -52,32 +51,32 @@ router.get('/', verifyToken, (req, res) => {
 	 */
 	Idol.find(
 		{
-		  $or: [
-			{ name: { $regex: nameReg } },
-			{ birthplace: { $regex: nameReg } }
-		  ]
+			$or: [
+				{ name: { $regex: nameReg } },
+				{ birthplace: { $regex: nameReg } }
+			]
 		})
 		.sort(sortTemp)
 		.skip(page * size)
 		.limit(size)
 		.then(idols => {
-		  if (idols) {
-			/**
-			 * 返回数据总数、保证模糊查询时返回对应数据的条数
-			 */
-			Idol.find({ $or: [ {name: { $regex: nameReg }}, { birthplace: { $regex: nameReg } } ] }).count()
-			  .then(co => {
-				return res.json({ status: 200, info: '查询成功', content: idols, totalElements: co });
-			  })
-			  .catch(err => {
-				return res.json({ status: -1, info: `查询失败_2：${err.name} : ${err.message}` });
-			  });
-		  } else {
-			return res.json({ status: -1, info: '查询失败_1' });
-		  }
+			if (idols) {
+				/**
+				 * 返回数据总数、保证模糊查询时返回对应数据的条数
+				 */
+				Idol.find({ $or: [{ name: { $regex: nameReg } }, { birthplace: { $regex: nameReg } }] }).count()
+					.then(co => {
+						return res.json({ status: 200, info: '查询成功', content: idols, totalElements: co });
+					})
+					.catch(err => {
+						return res.json({ status: -1, info: `查询失败_2：${err.name} : ${err.message}` });
+					});
+			} else {
+				return res.json({ status: -1, info: '查询失败_1' });
+			}
 		})
 		.catch(err => {
-		  return res.json({ status: -1, info: `查询失败：${err.name} : ${err.message}` });
+			return res.json({ status: -1, info: `查询失败：${err.name} : ${err.message}` });
 		});
 })
 

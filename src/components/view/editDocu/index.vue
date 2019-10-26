@@ -25,10 +25,13 @@
 import TinymceEditor from "./module/tinymce-editor";
 import { mapGetters } from "vuex";
 import { add, edit } from "@/api/otherApi/tinymceImg";
+import initPerm from "@/mixins/initPerm";
 export default {
   components: {
     TinymceEditor
   },
+  // 混入，分发复用功能（是否有权限打开此页面）
+  mixins: [initPerm],
   data() {
     return {
       textData: {        
@@ -37,6 +40,7 @@ export default {
       },
       disabled: false,
       isEdit: false, // 是否编辑
+      checkPermArr: ['ADMIN', 'EDITINFO_CREATE', 'EDITINFO_EDIT']
     };
   },
   created() {

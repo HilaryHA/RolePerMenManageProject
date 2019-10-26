@@ -3,12 +3,9 @@
  * @type {createApplication}
  */
 const express = require("express");
-
 const router = express.Router();
-
 const db = require("../models/db");
 const { verifyToken, cdCompare, noRepeatObj } = require("../util/util");
-
 let Menus = db.Menus;
 let Users = db.Users;
 let UsersRoles = db.UsersRoles;
@@ -72,14 +69,14 @@ router.get("/", verifyToken, (req, res) => {
 router.get('/user', verifyToken, (req, res) => {
   let tokenMenu = req.headers['authorization'];
   if (!tokenMenu) {
-    return res.json({ status: -1, info: '未登录喔...' });
+    return res.json({ status: 401, info: '未登录喔...' });
   }
   // 注意传递的值多了两个引号
   tokenMenu = tokenMenu.split(`"`)[1];
   Users.findOne({ 'token': tokenMenu })
     .then(user => {
       if (!user) {
-        return res.json({ status: -1, info: '未登录噢...' });
+        return res.json({ status: 401, info: '账号有误，请退出重新登录...' });
       }
       getSupMenuAndPerm(user, res);
     })

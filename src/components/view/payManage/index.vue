@@ -85,7 +85,6 @@ export default {
   mixins: [initData],
   data() {
     return {
-      // tableData: [],
       sup_this: this,
       delLoading: false
     };
@@ -123,7 +122,6 @@ export default {
 
     // 删除
     async subDelete(id) {
-      console.log(id);
       this.delLoading = true;
       let deleteId = await del(id);
       if (deleteId.data && deleteId.data.status == 200) {

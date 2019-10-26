@@ -35,26 +35,26 @@
           </template>
         </el-table-column>
         <el-table-column
-          v-if="checkPermission(['ADMIN','USER_ALL', 'USER_SELECT', 'USER_EDIT', 'USER_DELETE'])"
+          v-if="checkPermission(['ADMIN','EDITINFO_ALL', 'EDITINFO_SELECT', 'EDITINFO_EDIT', 'EDITINFO_DELETE'])"
           label="操作"
           align="center"
           min-width="140px"
         >
           <template slot-scope="scope">
             <docu-view
-              v-permission="['ADMIN','USER_ALL', 'USER_SELECT']"
+              v-permission="['ADMIN','EDITINFO_ALL', 'EDITINFO_SELECT']"
               :data="scope.row"
               :sup_this="sup_this"
             ></docu-view>
             <el-button
-              v-permission="['ADMIN','USER_ALL', 'USER_EDIT']"
+              v-permission="['ADMIN','EDITINFO_ALL', 'EDITINFO_EDIT']"
               size="mini"
               icon="el-icon-edit"
               type="primary"
               @click="handleEdit(scope, scope.row)"
             ></el-button>
             <el-popover
-              v-permission="['ADMIN','USER_ALL', 'USER_DELETE']"
+              v-permission="['ADMIN','EDITINFO_ALL', 'EDITINFO_DELETE']"
               placement="top"
               width="180"
               :ref="scope.row._id"

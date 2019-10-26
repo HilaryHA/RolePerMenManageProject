@@ -1,6 +1,10 @@
-// 定义数据表
+/**
+ * 定义数据表
+ * @author Hilary
+ * @data 2019/06/06
+ */
 
-//引入mongoose模块
+// 引入mongoose模块
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 
@@ -15,7 +19,7 @@ mongoose.Promise = require('bluebird');
 function connectionTable(obj, schemaName) {
   return new mongoose.Schema(obj, { collection: schemaName })
 }
-// const userSchema = new mongoose.Schema(obj, { collection: schemaName })
+
 // 用户信息
 const userSchema = connectionTable({
   id: Number,
@@ -231,18 +235,18 @@ const logSchema = connectionTable({
 
 // 上传图片表
 const uploadImgSchema = connectionTable({
-  last_modified_user_id : Number,
-  name : String,
-  originalname : String,
-  priview_url : String,
-  encoding : String,
-  suffix_name : String,
-  size : Number,
-  create_time : {
+  last_modified_user_id: Number,
+  name: String,
+  originalname: String,
+  priview_url: String,
+  encoding: String,
+  suffix_name: String,
+  size: Number,
+  create_time: {
     type: Date,
     default: Date.now
   },
-  update_time : {
+  update_time: {
     type: Date,
     default: Date.now
   }
@@ -250,14 +254,14 @@ const uploadImgSchema = connectionTable({
 
 // 文档表
 const docuTinymceSchema = connectionTable({
-  last_modified_user_id : Number,
-  html_text : String,  
-  title : String,
-  create_time : {
+  last_modified_user_id: Number,
+  html_text: String,
+  title: String,
+  create_time: {
     type: Date,
     defaule: Date.now
   },
-  update_time : {
+  update_time: {
     type: Date,
     defaule: Date.now
   }

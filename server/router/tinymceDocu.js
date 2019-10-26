@@ -2,51 +2,51 @@
  * 富文本编辑器相关接口
  * @type {createApplication}
  */
-//引入express模块
 const express = require("express");
-const fs = require("fs"); // 图片路径
-const multer = require("multer");// 上传图片
+const fs = require("fs");           // 图片路径
+const multer = require("multer");   // 上传图片
 // const multipart = require("connect-multiparty");// 接收formData数据
 // const multipartMiddleware = multipart();
 
-//定义路由级中间件
 const router = express.Router();
-//引入数据模型模块
 const db = require("../models/db");
 const { createFolder, isPresenceFile, verifyToken } = require("../util/util");
-
 let Users = db.Users;
 let UploadImg = db.UploadImg;
 let DocuTinymce = db.DocuTinymce;
 
 
-// 【注意】upload文件夹与app.js使用的静态文件夹路径(相对于app.js的路径)一致
+/**
+ * 通过multer定义图片文件存储路径
+ * 【注意】'uploadFolder' 是指与app.js使用的静态文件夹路径(相对于app.js的路径)一致
+ * 通过 filename 属性定制
+ * 将保存文件名设置为 字段名 + 时间戳，比如 tinymce_file_1478521468943.jpg
+ * 通过 storage 选项来对 上传行为 进行定制化
+ */
 let uploadFolder = './upload/tinymce';
 createFolder(uploadFolder);
-// 通过 filename 属性定制
 let storage = multer.diskStorage({
     destination: function (req, file, cb) {
         // 保存的路径，备注：需要自己创建
         cb(null, uploadFolder);
     },
     filename: function (req, file, cb) {
-        /**
-         *  将保存文件名设置为 字段名 + 时间戳，比如 tinymce_file_1478521468943.jpg
-         *  【注意】 Date.now()时间戳不能单独定义，如let date = Date.now()来使用，会造成，请求此接口时，时间戳都是同一个值，文件会被覆盖
-        */
+        // 【注意】 Date.now()时间戳不能单独定义，如let date = Date.now()来使用，会造成，请求此接口时，时间戳都是同一个值，文件会被覆盖
         cb(null, `tinymce_${file.fieldname}_${Date.now()}.${file.originalname.split('.')[1]}`);
     }
 });
-// 通过 storage 选项来对 上传行为 进行定制化
 let upload = multer({ storage: storage });
 
+
 /**
- * 添加单个图片路由'file'为添加formData的字段名 -- 我要哭了 -- 获取FormData对象需要安装中间件
- * upload.single('file')  https://segmentfault.com/a/1190000012918178
+ * 添加单个图片路由'file'为添加formData的字段名
+ * -- 我要哭了 -- 获取FormData对象需要安装中间件
+ * upload.single('file') 上传单个图片    参考 https://segmentfault.com/a/1190000012918178
+ * 'multipartMiddleware' 是可以获取FormData对象的中间件
  *  // router.post("/addPicture", multipartMiddleware, upload.single('file') , (req, res) => {
  */
 router.post("/addPicture", upload.single('file'), (req, res) => {
-    // 相对于util.js的地址
+    // 相对于本文件的地址
     isPresenceFile(`../upload/tinymce/${req['file'].filename}`)
         .then(flag => {
             if (flag) {
@@ -138,7 +138,7 @@ router.get("/picture", verifyToken, (req, res) => {
                 /**
                  * 返回数据总数、保证模糊查询时返回对应数据的条数
                  */
-                UploadImg.find({ $or: [ { name: { $regex: nameReg } }, { suffix_name: { $regex: nameReg } } ] }).count()
+                UploadImg.find({ $or: [{ name: { $regex: nameReg } }, { suffix_name: { $regex: nameReg } }] }).count()
                     .then(co => {
                         return res.json({ status: 200, info: '查询成功', content: docu, totalElements: co });
                     })

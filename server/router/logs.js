@@ -3,18 +3,13 @@
  * @type {createApplication}
  */
 
-const express = require('express'); 
-const fs = require('fs'); // 操作文件
+const express = require('express');
+const fs = require('fs');			  // 操作文件
 const readline = require('readline'); // 按行读取
-const domain = require('domain'); // 处理异常
-
-//定义路由级中间件
+const domain = require('domain');     // 处理异常
 const router = express.Router();
-
-//引入数据模型模块
 const db = require('../models/db');
 const { verifyToken, noRepeat } = require("../util/util");
-
 let Logs = db.Logs;
 let Users = db.Users;
 
@@ -108,7 +103,7 @@ async function getLineFile(req, res, next) {
 		/* 处理异常，捕获异常，并且进程正常运行（try catch方式不能捕获异常，即导致进程退出） */
 		console.error(`Error：${e.name} : ${e.message}`);
 		/* 若没有文件，就将日志表清空，然后调用回调函数 */
-		Logs.remove().then(() => next()).catch(err => { return res.json({ status: -1, info: `文件异常 ${err.name}:${err.message}` }) } )
+		Logs.remove().then(() => next()).catch(err => { return res.json({ status: -1, info: `文件异常 ${err.name}:${err.message}` }) })
 	})
 	/* 运行函数 */
 	d.run(() => { readDateFile(req, res, next, filePath) });
@@ -121,7 +116,7 @@ async function getLineFile(req, res, next) {
  * @param {*} next 
  * @param {*} filePath 
  */
-async function readDateFile(req, res, next, filePath) {	
+async function readDateFile(req, res, next, filePath) {
 	const input = await fs.createReadStream(filePath);
 	// 写入对应的用户名，可以使用output.write()或者fs.appendFile()，os.EOL表示换行（ 需要引入let os = require('os') ）
 	// const output = await fs.createWriteStream(outPath); 
@@ -139,7 +134,7 @@ async function readDateFile(req, res, next, filePath) {
 		newArr.forEach((item, index) => {
 			let tempArr = item.split(' ');
 			let tempToken = tempArr[9].split('"')[1];
-			tokenArr.push(tempToken);			
+			tokenArr.push(tempToken);
 		})
 		if (tokenArr.length) {
 			// 【根据查询的token值，获取对应的name】
@@ -181,12 +176,12 @@ async function readDateFile(req, res, next, filePath) {
  */
 function logsCreateData(req, res, next, arr) {
 	let insertArr = []; // 同时插入多条数据
-	arr.length && arr.forEach((element, index) => {		
+	arr.length && arr.forEach((element, index) => {
 		let teArr = element.split(' '); // 根据空格截取
 		if (teArr[4] != 'OPTIONS') {  // 若方法等于'OPTIONS'则不存入
 			let endArr = [];
 			let obj = {};
-			endArr = teArr.map(it => {				
+			endArr = teArr.map(it => {
 				let regExpTm = /^\[.+\]$/; // 匹配正则，判断是否是中括号括起来的数据
 				if (regExpTm.test(it)) {
 					it = it.split('[')[1].split(']')[0];
@@ -200,10 +195,10 @@ function logsCreateData(req, res, next, arr) {
 			obj.address = endArr[8]
 			obj.create_time = endArr[0];
 			obj.update_time = obj.create_time;
-			insertArr.push(obj);			
+			insertArr.push(obj);
 			if (index == arr.length - 2 || index == arr.length - 1) {	// 【当为最后一条存入时】 因为打印出来，只读取到倒数第二条，或倒数第一条就不执行了
 				insertArr.length && Logs.remove() // 【移除所有日志】
-					.then(ye => {						
+					.then(ye => {
 						Logs.find({}).sort({ id: -1 }).limit(1) // 【设置最大日志id】
 							.then(maxDa => {
 								let maxId = 1; // 默认值
@@ -217,7 +212,7 @@ function logsCreateData(req, res, next, arr) {
 									} else {
 										insertArr[i].id = insertArr[i - 1].id + 1;
 									}
-								}								
+								}
 								Logs.insertMany(insertArr) // 【插入所有当天日志信息】 -- 一次存入多条数据
 									.then(manyLog => {
 										next(); // 【成功执行回调函数】
