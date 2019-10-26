@@ -1,12 +1,14 @@
-/**
- *  接口域名的管理
+/**  
+ *  @author Hilary
+ *  @data  2019/05/04
+ *  @version 1.0.1
+ *  @parameter  接口域名的管理
  */
 
- const base = {
-    user: 'http://localhost:3000/user',
-    menu: 'http://localhost:3000/menu',
-    api: 'http://localhost:3000'
-    //  bd: 'http://xxx.com:8080/api/mongodb'
- }
+const base = {
+   user: 'http://localhost:3000/user',
+   menu: 'http://localhost:3000/menu',
+   api: 'http://localhost:3000'
+}
 
- export default base;
+export default base;

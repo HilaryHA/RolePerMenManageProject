@@ -14,6 +14,7 @@ export function uploadImage(params) {
 
 /**
  * 删除图片
+ * @param {*} _id 
  */
 export async function delImage(_id) {
   let img = await axios.delete(`${base.api}/tinymceDocu/picture/${_id}`);
@@ -21,22 +22,31 @@ export async function delImage(_id) {
   return img;
 }
 
-// 创建文档信息
-export async function add (params) {
+/**
+ * 创建文档信息
+ * @param {Object} params 
+ */
+export async function add(params) {
   let docu = await axios.post(`${base.api}/tinymceDocu/userDocu`, params);
   showNotification(docu, 'success');
   return docu;
 }
 
-// 修改文档信息   
-export async function edit (params) {
+/**
+ * 修改文档信息
+ * @param {Object} params 
+ */   
+export async function edit(params) {
   let docu = await axios.put(`${base.api}/tinymceDocu/userDocu/${params._id}`, params);
   showNotification(docu, 'success');
   return docu;
 }
 
-// 删除文档信息
-export async function del (_id) {
+/**
+ * 删除文档信息
+ * @param {*} _id 
+ */
+export async function del(_id) {
   let docu = await axios.delete(`${base.api}/tinymceDocu/userDocu/${_id}`);
   showNotification(docu, 'success');
   return docu;

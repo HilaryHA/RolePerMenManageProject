@@ -12,13 +12,10 @@ import menuList from '@/api/otherApi/menuList';
 // 权限信息模板
 import { getAllPerName } from '@/api/otherApi/purview';
 
-// 其他模板接口-----
-
 // 导出接口
 export default {
     userInfo,
     menuList,
     getAllPerName
-    //...
 }
 

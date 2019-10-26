@@ -18,6 +18,10 @@ export function queryPay(tradeNo) {
   return axios.get(`${base.api}/alipay/${tradeNo}`);
 }
 
+/**
+ * 删除订单
+ * @param {String} tradeNo 订单号
+ */
 export function del(tradeNo) {
   return axios.delete(`${base.api}/alipay/${tradeNo}`);
 }
