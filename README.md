@@ -143,7 +143,7 @@ npm run dev     #运行项目
 
 2. **将访问地址localhost改为可以ip地址访问**  
     1. config文件夹>index.js文件：
-               ```javascript
+    2. ```javascript
                 module.exports = {
                     dev: {
                         ...
@@ -153,7 +153,7 @@ npm run dev     #运行项目
                         ...
                     }
                 }
-                ```  
+       ```  
 
 3. **组件注册的几种写法**  
     1. `{ path: '/login', name: 'login', component: Login }` 需要文件引入对应组件，如`import Login from '@/components/login'`
@@ -183,7 +183,7 @@ npm run dev     #运行项目
     2. 避免store数据刷新丢失问题，安装插件`vuex-persistedstate`可解决
        * `npm install vuex-persistedstate --save-dev`  # 此插件默认将数据存储在localStorage中  
        * store中关键代码（/src/store/index.js）：
-                ```javascript
+       * ```javascript
                 export default new Vuex.Store({
                        modules: {
                               menu,
@@ -191,14 +191,14 @@ npm run dev     #运行项目
                        },
                        plugins: [createPersistedState()]        // 默认存储于localStorage
                 })
-                 ```  
+         ```  
 
   
 6. **解决跨域问题**  
     1. 后端解决：本项目是后端（node.js）处理的
        * 安装cors中间件 `npm install cors --save` # my-vue目录下安装cors包即可  
        * 如下（/server/app.js中）：
-                  ```javascript
+       * ```javascript
                   // 引入cors包
                   var cors = require('cors');
                   // 解决跨域问题
@@ -207,11 +207,12 @@ npm run dev     #运行项目
                            methods: ['GET','POST'], // 只允许get和post请求
                            alloweHeaders: ['Content-Type', 'Authorization'] // 只允许带这两种请求头的链接访问
                   }));
-                  ```  
+         ```  
        * 前端可直接调用接口`http://localhost:3000/menu`访问（端口号不同，也是跨域）
                   
-    2.前端解决：my-vue目录下的config > index.js
-      > 配置proxy代理：
+    2. 前端解决：my-vue目录下的config > index.js
+       * 配置proxy代理：
+       * ```javascript
                   proxyTable: {
                             //代理
                             "/api": {
@@ -222,8 +223,9 @@ npm run dev     #运行项目
                                  secure: false,    // 如果是https接口，需要配置这个参数
                                  changeOrigin: true// 如果接口跨域，需要进行这个参数配置
                             }
-                  }
-                  调用接口'http://localhost:3000/menu'访问，请求方法中接口地址直接写`/api/menu`即可
+                  } 
+          ```  
+       * 调用接口'http://localhost:3000/menu'访问，请求方法中接口地址直接写`/api/menu`即可
                   
 
 7. **Vue打包后浏览器检查(f12)能看到源码问题**  
