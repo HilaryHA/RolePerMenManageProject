@@ -134,12 +134,12 @@ npm run dev     #运行项目
 1. **设置history模式，默认是hash模式**  
     1. 此模式，需要后端配合设置
         * router文件夹>index.js文件:  
-        *       ```javascript
+        * ```javascript
                 export default new Router({
                         mode: 'history',
                         routes:[{...}]
                 })
-                ```  
+          ```  
 
 2. **将访问地址localhost改为可以ip地址访问**  
     1. config文件夹>index.js文件：
