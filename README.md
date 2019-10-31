@@ -225,7 +225,7 @@ npm run dev     #运行项目
                             }
                   } 
           ```  
-       * 调用接口'http://localhost:3000/menu'访问，请求方法中接口地址直接写`/api/menu`即可
+       * 调用接口`http://localhost:3000/menu`访问，请求方法中接口地址直接写`/api/menu`即可
                   
 
 7. **Vue打包后浏览器检查(f12)能看到源码问题**  
