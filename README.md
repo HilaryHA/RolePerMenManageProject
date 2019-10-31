@@ -133,14 +133,17 @@ npm run dev     #运行项目
 -----
 1. **设置history模式，默认是hash模式**  
     1. 此模式，需要后端配合设置
-        > router文件夹>index.js文件:
+        * router文件夹>index.js文件:
+                ```javascript
                 export default new Router({
                         mode: 'history',
                         routes:[{...}]
                 })
+                ```  
 
 2. **将访问地址localhost改为可以ip地址访问**  
-    > config文件夹>index.js文件：
+    1. config文件夹>index.js文件：
+               ```javascript
                 module.exports = {
                     dev: {
                         ...
@@ -150,25 +153,37 @@ npm run dev     #运行项目
                         ...
                     }
                 }
+                ```  
 
 3. **组件注册的几种写法**  
     1. `{ path: '/login', name: 'login', component: Login }` 需要文件引入对应组件，如`import Login from '@/components/login'`
     2. `{ path: '/login', name: 'login', component: () => import('@/components/login.vue') }`
     3. `{ path: '/login', name: 'login', component: require('@/components/login.vue').default }`
-    4. `{ path: '/login', name: 'login', components: require('@/components/login.vue') }`
-
+    4. `{ path: '/login', name: 'login', components: require('@/components/login.vue') }`  
+ 
 4. **axios请求方法封装、请求接口文件的封装**  
     1. 自定义函数在util文件夹下，http.js文件封装了axios请求
-       >  封装http.js文件中，注意：request请求时，在请求头带上token值， 
-          response响应时，接收错误状态码的值，当跨域问题出现时，接收不到错误状态码
+       >  封装http.js文件中  
+          注意：request请求时，在请求头带上token值， 
+          response响应时，接收错误状态码的值，当跨域问题出现时，接收不到错误状态码  
        
-    2. api文件夹，里面包含index.js（管理统一接口）、base.js（管理多个接口域名）、otherApi文件夹（内部如user.js，即专门写用户模块的接口）
+    2. api文件夹里面
+       * 包含index.js（管理统一接口）  
+       * base.js（管理多个接口域名）  
+       * otherApi文件夹（内部如user.js，即专门写用户模块的接口）  
 
 5. **需要存储到本地的数据，通过Vuex中的store存储**  
-    1. 存储的信息有：用户登录信息、路由菜单信息menus、权限信息roles、断网状态、token是否过期等
+    1. 存储的信息有：
+       * 用户登录信息、  
+       * 路由菜单信息menus、  
+       * 权限信息roles、  
+       * 断网状态、  
+       * token是否过期等  
+       
     2. 避免store数据刷新丢失问题，安装插件`vuex-persistedstate`可解决
-       > `npm install vuex-persistedstate --save-dev`  # 此插件默认将数据存储在localStorage中
-         store中关键代码（/src/store/index.js）：
+       * `npm install vuex-persistedstate --save-dev`  # 此插件默认将数据存储在localStorage中  
+       * store中关键代码（/src/store/index.js）：
+                ```javascript
                 export default new Vuex.Store({
                        modules: {
                               menu,
@@ -176,12 +191,14 @@ npm run dev     #运行项目
                        },
                        plugins: [createPersistedState()]        // 默认存储于localStorage
                 })
+                 ```  
 
   
 6. **解决跨域问题**  
     1. 后端解决：本项目是后端（node.js）处理的
-       > 安装cors中间件 `npm install cors --save` # my-vue目录下安装cors包即可
-         如下（/server/app.js中）：
+       * 安装cors中间件 `npm install cors --save` # my-vue目录下安装cors包即可  
+       * 如下（/server/app.js中）：
+                  ```javascript
                   // 引入cors包
                   var cors = require('cors');
                   // 解决跨域问题
@@ -190,7 +207,8 @@ npm run dev     #运行项目
                            methods: ['GET','POST'], // 只允许get和post请求
                            alloweHeaders: ['Content-Type', 'Authorization'] // 只允许带这两种请求头的链接访问
                   }));
-                  前端可直接调用接口`http://localhost:3000/menu`访问（端口号不同，也是跨域）
+                  ```  
+       * 前端可直接调用接口`http://localhost:3000/menu`访问（端口号不同，也是跨域）
                   
     2.前端解决：my-vue目录下的config > index.js
       > 配置proxy代理：
