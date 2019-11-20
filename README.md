@@ -131,16 +131,113 @@ npm run dev     #运行项目
 *****
 ### 备注说明
 -----
-1. **跨域问题**  
-    1.本项目是后端（node.js）处理的
+1. **设置history模式，默认是hash模式**  
+    1. 此模式，需要后端配合设置
+        * router文件夹>index.js文件:  
+        * ```javascript
+                export default new Router({
+                        mode: 'history',
+                        routes:[{...}]
+                })
+          ```  
 
-2. **前端权限控制，两种方式**
+2. **将访问地址localhost改为可以ip地址访问**  
+    1. config文件夹>index.js文件：
+    2. ```javascript
+                module.exports = {
+                    dev: {
+                        ...
+                        host: '0.0.0.0', 		       // 可以通过http://localhost:8080或http://ip值:8080进行访问
+                        port: 8080				         // 端口号
+                        autoOpenBrowser: true,	   // npm run dev后自动打开浏览器
+                        ...
+                    }
+                }
+       ```  
+
+3. **组件注册的几种写法**  
+    1. `{ path: '/login', name: 'login', component: Login }` 需要文件引入对应组件，如`import Login from '@/components/login'`
+    2. `{ path: '/login', name: 'login', component: () => import('@/components/login.vue') }`
+    3. `{ path: '/login', name: 'login', component: require('@/components/login.vue').default }`
+    4. `{ path: '/login', name: 'login', components: require('@/components/login.vue') }`  
+ 
+4. **axios请求方法封装、请求接口文件的封装**  
+    1. 自定义函数在util文件夹下，http.js文件封装了axios请求
+       >  封装http.js文件中  
+          注意：request请求时，在请求头带上token值， 
+          response响应时，接收错误状态码的值，当跨域问题出现时，接收不到错误状态码  
+       
+    2. api文件夹里面
+       * 包含index.js（管理统一接口）  
+       * base.js（管理多个接口域名）  
+       * otherApi文件夹（内部如user.js，即专门写用户模块的接口）  
+
+5. **需要存储到本地的数据，通过Vuex中的store存储**  
+    1. 存储的信息有：
+       * 用户登录信息、  
+       * 路由菜单信息menus、  
+       * 权限信息roles、  
+       * 断网状态、  
+       * token是否过期等  
+       
+    2. 避免store数据刷新丢失问题，安装插件`vuex-persistedstate`可解决
+       * `npm install vuex-persistedstate --save-dev`  # 此插件默认将数据存储在localStorage中  
+       * store中关键代码（/src/store/index.js）：
+       * ```javascript
+                export default new Vuex.Store({
+                       modules: {
+                              menu,
+                              ....
+                       },
+                       plugins: [createPersistedState()]        // 默认存储于localStorage
+                })
+         ```  
+
+  
+6. **解决跨域问题**  
+    1. 后端解决：本项目是后端（node.js）处理的
+       * 安装cors中间件 `npm install cors --save` # my-vue目录下安装cors包即可  
+       * 如下（/server/app.js中）：
+       * ```javascript
+                  // 引入cors包
+                  var cors = require('cors');
+                  // 解决跨域问题
+                  app.use(cors({
+                           origin: ['http://localhost:8099'], // 允许此域名访问
+                           methods: ['GET','POST'], // 只允许get和post请求
+                           alloweHeaders: ['Content-Type', 'Authorization'] // 只允许带这两种请求头的链接访问
+                  }));
+         ```  
+       * 前端可直接调用接口`http://localhost:3000/menu`访问（端口号不同，也是跨域）
+                  
+    2. 前端解决：my-vue目录下的config > index.js
+       * 配置proxy代理：
+       * ```javascript
+                  proxyTable: {
+                            //代理
+                            "/api": {
+                                 target: "http://localhost:3000",  // 接口的域名
+                                 pathRewrite: {
+                                   "^/api": "http://localhost:3000"     // 需要将/api重写为''
+                                 },
+                                 secure: false,    // 如果是https接口，需要配置这个参数
+                                 changeOrigin: true// 如果接口跨域，需要进行这个参数配置
+                            }
+                  } 
+          ```  
+       * 调用接口`http://localhost:3000/menu`访问，请求方法中接口地址直接写`/api/menu`即可
+                  
+
+7. **Vue打包后浏览器检查(f12)能看到源码问题**  
+    1. 修改config的index.js文件，将productionSourceMap设置为false
+
+8. **前端权限控制，两种方式**
     1. 自定义指令v-permission，参数为该组件对应的可显示权限数组值
        * 如：`v-permission="['ADMIN','PERMISSION_ALL', 'PERMISSION_EDIT']"`
     2. 通过检验函数checkPermission，参数为该组件对应的可显示权限数组值
        * 如：`v-if="checkPermission(['ADMIN','PERMISSION_ALL', 'PERMISSION_EDIT', 'PERMISSION_DELETE'])"`    
 
-3. **全局守卫问题**
+9. **全局守卫问题**
     1. 全局守卫写在了roter文件下的index.js文件中，因为一般直接写在main.js，我把它单独抽了出来，还给忘记啦哈哈
     2. 具体参考 [Vue动态路由、菜单（解决了刷新菜单空白问题） 全局前置守卫](https://blog.csdn.net/weixin_42512937/article/details/100778840 "动态路由、全局守卫")
 
