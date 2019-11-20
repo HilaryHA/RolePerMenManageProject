@@ -45,9 +45,7 @@ const mutations = {
   },
   [types.LOGIN_IN]: (state, data) => {
     state.user = data.userInfo;
-    state.roles = data.menuAndPerm[1];
     state.token = data.userInfo.token;
-
   },
   [types.LOGIN_OUT]: (state) => {
     state.loginSuccess = false;
@@ -78,14 +76,9 @@ const actions = {
   setRoles: ({ commit }, data) => {
     setRoleInfo(data, commit);
   },
-  loginIn: ({ commit }, data) => {
-    // console.log('----------------->',dispatch);
-
+  loginIn: ({ commit, dispatch }, data) => {
     commit(types.LOGIN_IN, data);
-    // // commit(types.USER_TOKEN, token);
-    // dispatch('userToken'); // 调用了吗？
-    // dispatch('Menu/addMenu', {},  {root: true}); // 调用菜单模块中的方法
-    // dispatch('setRoles', roleData)
+    dispatch('setRoles', data.menuAndPerm[1]); // 存储角色数据，调用其他 actions 方法
   },
   loginOut: ({ commit }) => {
     commit(types.LOGIN_OUT);
@@ -96,7 +89,6 @@ const actions = {
 }
 
 export const setRoleInfo = (roles, commit) => {
-  // console.log('------------------roles--------------', roles);
   // 如果没有任何权限，则赋予一个默认的权限，避免请求死循环
   if (!roles || roles.length == 0) {
     commit('SET_ROLES', ['ROLE_SYSTEM_DEFAULT']);

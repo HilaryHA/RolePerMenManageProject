@@ -3,7 +3,7 @@
     <el-input
       type="text"
       v-model="query.value"
-      placeholder="请输入菜单名称搜索"
+      placeholder="请输入角色名称搜索"
       clearable
       size="mini"
       @keyup.enter.native="toQuery"

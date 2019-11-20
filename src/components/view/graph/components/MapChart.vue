@@ -15,7 +15,7 @@ export default {
     return {
       mapchart: null
     };
-  },
+  },  
   mounted() {
     this.$nextTick(() => {
       let _this = this;
@@ -463,7 +463,7 @@ export default {
     }
   },
   beforeDestroy() {
-    if (this.mapchart) {
+    if (!this.mapchart) {
       return;
     }
     window.removeEventListener("resize", this.__resizeHandler);

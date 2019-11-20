@@ -148,8 +148,18 @@ export default {
         ]
       };
       this.pieData = this.$echarts.init(this.$refs.myPie);
+      this.pieData.clear();
       this.pieData.setOption(option);
     }
+  },
+  beforeDestroy() {
+    if (!this.pieData) {
+      return;
+    }
+    window.removeEventListener("resize", this.__resizeHandler);
+    this.pieData.clear();
+    this.pieData.dispose();
+    this.pieData = null;
   }
 };
 </script>

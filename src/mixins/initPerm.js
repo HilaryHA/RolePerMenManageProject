@@ -9,7 +9,7 @@ export default {
         next(vm => {
             // 必须有"checkPermArr"字段才能检验
             if (vm.checkPermArr && vm.checkPermArr.length) {
-                vm.checkPermArr = ['test']
+                // vm.checkPermArr = ['test']
                 let flag = checkPermission(vm.checkPermArr);
                 if (!flag) {
                     // 若没有支付权限，则跳转到401页面
