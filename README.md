@@ -15,6 +15,7 @@
 * [文件说明](#文件说明)
 * [功能说明](#功能说明)
 * [备注说明](#备注说明)
+* [项目展示图](#项目展示图)
 
   
 *****
@@ -240,6 +241,24 @@ npm run dev     #运行项目
 9. **全局守卫问题**
     1. 全局守卫写在了roter文件下的index.js文件中，因为一般直接写在main.js，我把它单独抽了出来，还给忘记啦哈哈
     2. 具体参考 [Vue动态路由、菜单（解决了刷新菜单空白问题） 全局前置守卫](https://blog.csdn.net/weixin_42512937/article/details/100778840 "动态路由、全局守卫")
+
+
+*****
+### 项目展示图
+-----
+
+|展示图|
+|---
+|![image](https://github.com/HilaryHA/my-vue/blob/master/static/img/showGif/1_0.gif)
+|![image](https://github.com/HilaryHA/my-vue/blob/master/static/img/showGif/1_1.gif)
+|![image](https://github.com/HilaryHA/my-vue/blob/master/static/img/showGif/1_2.gif)
+|![image](https://github.com/HilaryHA/my-vue/blob/master/static/img/showGif/1_3.gif)
+|![image](https://github.com/HilaryHA/my-vue/blob/master/static/img/showGif/1_4.gif)
+|![image](https://github.com/HilaryHA/my-vue/blob/master/static/img/showGif/1_5.gif)
+|![image](https://github.com/HilaryHA/my-vue/blob/master/static/img/showGif/1_6.gif)
+|![image](https://github.com/HilaryHA/my-vue/blob/master/static/img/showGif/1_7.gif)
+|![image](https://github.com/HilaryHA/my-vue/blob/master/static/img/showGif/1_8.gif)
+
 
 
 
