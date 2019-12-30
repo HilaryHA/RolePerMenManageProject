@@ -6,7 +6,7 @@
 
 // 引入mongoose模块
 const mongoose = require('mongoose');
-mongoose.Promise = require('bluebird');
+mongoose.Promise = require('bluebird'); // 可以引用 catch 等方法，参考 https://eddywashere.com/blog/switching-out-callbacks-with-promises-in-mongoose/
 // 引入数据表
 const tableSchema = require('./tableSchema');
 

@@ -106,7 +106,11 @@ router.get("/:id", verifyToken, (req, res) => {
    * 聚合(aggregate)主要用于处理数据，并返回计算后的数据结果，有点类似sql语句中的 count(*)
    * "$project" 只显示（1）或隐藏（0）对应属性
    * "$match" 用于过滤数据，只输出符合条件的文档
-   * "$lookup" 根据主外键联表查询（外键是相对主表中的字段名）
+   * "$lookup" 根据主外键联表查询（外键是相对主表中的字段名，此处是 user_id）,参考 https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/index.html
+   *           "from" 表示 在同一数据库中指定要执行联接的集合。
+   *           "localField" 表示 指定从文档输入到$ lookup阶段的字段。即 users 表对应的主键。 $lookup在from集合的文档中对localField和foreignField执行相等的匹配。
+   *           "foreignField" 表示 指定from集合中文档中的字段。即 users_roles 表对应的外键
+   *           "as" 表示 指定要添加到输入文档中的新数组字段的名称。
    */
   Users.aggregate([
     { "$project": { "__v": 0 } },
@@ -414,10 +418,10 @@ const getSignData = function (res, supData, user) {
   /**
    * 【创建菜单临时表】
    * 参考 https://docs.mongodb.com/manual/reference/operator/aggregation/unwind/
-   * "$unwind" 如将本是一条含children数组(包含三个元素)的数据，就返回以children为字段名，children的数据被元素替换的三条数据
-   * "$group" 需要以"_id"进行分组
-   * "$push" 将"children"字段下的数据，作为元素添加到menu数组中
-   * "$sort" 以"_id"进行正序排序
+   * "$unwind" 如 将有字段是一个children数组( 包含三个元素 )的数据，返回以children为字段名，当前children字段的数据 对应 之前children数组下的元素，即一条数据替换成三条数据
+   * "$group" 需要以"_id"进行分组，定义"_id"对应的字段 ( 临时表拥有字段: _id、perm )
+   * "$push" 将"children"字段下的数据，作为元素添加到 "menu"/"perm" 数组中
+   * "$sort" 以"_id"进行正序排序 ( "1"表示正序，"-1"表示倒序 )
    * "$out" 输出临时表的名字
   */
   Menus.aggregate([
